@@ -1,0 +1,1456 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QUEETELI — эликсиры из натуральных фруктов</title>
+<meta name="description" content="QUEETELI — концентрированные фруктовые эликсиры и начинки из Грузии: аджарский мандарин, гурийский фейхоа, горный гранат.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Forum&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1b1814;
+  --ink-2:#5b544c;
+  --line:rgba(27,24,20,.12);
+  --bg:#ffffff;
+  --cream:#fbf6ef;
+  --orange:#e4501c;
+  --orange-2:#f39a3c;
+  --peach:#f7b9a6;
+  --navy:#1e2650;
+  --feijoa:#5f8a2a;
+  --granat:#a3163c;
+  --serif:"Forum", "Times New Roman", serif;
+  --sans:"Manrope", system-ui, sans-serif;
+  --ease:cubic-bezier(.7,0,.2,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis.lenis-stopped{overflow:hidden}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{display:block;max-width:100%;user-select:none;-webkit-user-drag:none}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+h1,h2,h3,h4,h5,h6,.hero-sub{font-family:var(--serif);text-transform:uppercase}
+h2{font-weight:400!important}
+em{font-style:italic}
+::selection{background:var(--orange);color:#fff}
+
+/* ---------- split text ---------- */
+.fx .word{display:inline-block;white-space:nowrap;perspective:900px}
+.fx .char{display:inline-block;will-change:transform,opacity}
+
+/* ---------- loader ---------- */
+.loader{position:fixed;inset:0;z-index:100;background:#fff;display:grid;place-items:center}
+.loader-in{display:flex;flex-direction:column;align-items:center;gap:22px}
+.loader img{width:150px}
+.loader-bar{width:180px;height:2px;background:var(--line);overflow:hidden;border-radius:2px}
+.loader-bar i{display:block;height:100%;width:0;background:var(--orange)}
+.loader-num{font-family:var(--serif);font-size:20px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+
+/* ---------- top bar ---------- */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;align-items:center;justify-content:space-between;padding:22px 20px;pointer-events:none}
+.topbar>*{pointer-events:auto}
+.top-logo{width:110px}
+.top-actions{display:flex;gap:10px;align-items:center}
+.pill{display:inline-flex;align-items:center;gap:10px;height:46px;padding:0 22px;border-radius:999px;font-weight:600;font-size:14px;letter-spacing:.02em;transition:background .3s,color .3s,transform .3s}
+.pill-light{background:rgba(255,255,255,.75);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line)}
+.pill-light:hover{background:var(--ink);color:#fff}
+.burger{width:46px;padding:0;justify-content:center;flex-direction:column;gap:5px}
+.burger i{display:block;width:18px;height:1.5px;background:currentColor;transition:transform .4s var(--ease)}
+.menu-open .burger i:first-child{transform:translateY(3.25px) rotate(45deg)}
+.menu-open .burger i:last-child{transform:translateY(-3.25px) rotate(-45deg)}
+
+/* ---------- side nav (черточки) ---------- */
+.sidenav{position:fixed;right:5px;top:50%;transform:translateY(-50%);z-index:35;display:flex;flex-direction:column;gap:14px;align-items:flex-end}
+.sidenav a{position:relative;display:flex;align-items:center;justify-content:flex-end;height:12px;width:56px}
+.sidenav a i{display:block;height:2px;width:16px;background:rgba(27,24,20,.25);border-radius:2px;transition:width .5s var(--ease),background .4s}
+.sidenav a span{position:absolute;right:calc(100% + 6px);white-space:nowrap;font-size:12px;font-weight:600;letter-spacing:.04em;opacity:0;transform:translateX(8px);transition:.4s var(--ease);background:#fff;padding:3px 8px;border-radius:6px}
+.sidenav a:hover span,.sidenav a.active span{opacity:1;transform:none}
+.sidenav a:hover i{width:30px;background:var(--ink)}
+.sidenav a.active i{width:44px;background:var(--orange)}
+.sidenav a.active span{color:var(--orange)}
+
+/* ---------- dock (фикс. кнопки) ---------- */
+.dock{position:fixed;right:7px;bottom:18px;z-index:45;display:flex;gap:4px;padding:5px;border-radius:999px;background:var(--navy);box-shadow:0 18px 40px -12px rgba(30,38,80,.5)}
+.dock a{display:inline-flex;align-items:center;gap:9px;height:46px;padding:0 20px 0 8px;border-radius:999px;color:#fff;font-weight:600;font-size:15px;transition:background .3s}
+.dock .buy{background:var(--orange)}
+.dock .buy:hover{background:#ff6a33}
+.dock .taste:hover{background:rgba(255,255,255,.12)}
+.dock .ico{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#fff;color:var(--orange);font-weight:800;font-size:16px}
+.dock .taste .ico{background:transparent;color:#fff}
+.dock svg{width:20px;height:20px}
+
+/* ---------- menu overlay ---------- */
+.menu{position:fixed;inset:0;z-index:38;background:var(--cream);clip-path:inset(0 0 100% 0);display:grid;grid-template-columns:1.2fr 1fr;align-items:center;padding:120px 8vw 80px;visibility:hidden}
+.menu-links{display:flex;flex-direction:column;gap:4px}
+.menu-links a{font-family:var(--serif);font-size:clamp(40px,5.4vw,84px);line-height:1.05;font-weight:500;display:flex;align-items:baseline;gap:18px;overflow:hidden}
+.menu-links a small{font-family:var(--sans);font-size:13px;color:var(--ink-2);font-weight:600}
+.menu-links a .t{display:inline-block;transition:color .3s,transform .5s var(--ease)}
+.menu-links a:hover .t{color:var(--orange);transform:translateX(14px) skewX(-6deg)}
+.menu-aside{align-self:end;justify-self:end;max-width:340px;display:flex;flex-direction:column;gap:22px}
+.menu-aside img{width:100%;max-width:300px;filter:drop-shadow(0 30px 40px rgba(228,80,28,.25))}
+.menu-aside p{color:var(--ink-2)}
+
+/* ---------- stage (pinned story) ---------- */
+#stage{position:relative}
+.stage-in{position:relative;height:100vh;height:100svh;overflow:hidden;background:#fff}
+.vid-wrap{position:absolute;inset:0;z-index:5;pointer-events:none;mix-blend-mode:multiply}
+.stage-video{position:absolute;left:0;top:0;opacity:0;filter:brightness(1.065) contrast(1.02);--m:18%;-webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,0) 0%,#000 var(--m),#000 92%,rgba(0,0,0,0) 100%),linear-gradient(to right,rgba(0,0,0,0) 0%,#000 14%,#000 86%,rgba(0,0,0,0) 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(to bottom,rgba(0,0,0,0) 0%,#000 var(--m),#000 92%,rgba(0,0,0,0) 100%),linear-gradient(to right,rgba(0,0,0,0) 0%,#000 14%,#000 86%,rgba(0,0,0,0) 100%);mask-composite:intersect}
+.blob{position:absolute;border-radius:50%;filter:blur(60px);opacity:.55;pointer-events:none}
+.blob.b1{width:42vw;height:42vw;left:-12vw;top:40vh;background:radial-gradient(circle,#ffd9b8 0%,rgba(255,217,184,0) 70%)}
+.blob.b2{width:36vw;height:36vw;right:-10vw;top:-8vh;background:radial-gradient(circle,#e7f0d2 0%,rgba(231,240,210,0) 70%)}
+.blob.b3{width:30vw;height:30vw;right:14vw;bottom:-14vh;background:radial-gradient(circle,#fde3e6 0%,rgba(253,227,230,0) 70%)}
+
+.bg-word{position:absolute;left:0;right:0;top:-14vh;text-align:center;font-family:var(--serif);font-weight:700;font-size:21vw;line-height:.8;letter-spacing:-.03em;color:#fbefeb;white-space:nowrap;pointer-events:none}
+.bg-word .px{display:inline-block}
+
+.hero-left{position:absolute;left:clamp(26px,7vw,140px);top:20.5vh;max-width:44vw;z-index:4}
+.hero-left .logo{display:none}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-2)}
+.eyebrow::before{content:"";width:26px;height:1px;background:currentColor}
+.hero-left .eyebrow,.hero-left .geo{display:none}
+.hero-title{font-family:var(--serif);font-weight:500;font-size:clamp(80px,6.2vw,116px);line-height:1.04;letter-spacing:-.025em;text-transform:uppercase;margin:0 0 32px}
+.hero-title em{color:inherit;font-style:normal;font-weight:500;white-space:nowrap}
+.hero-sub{font-family:var(--serif);font-size:clamp(52px,4.5vw,82px);font-style:italic;font-weight:500;line-height:.86;letter-spacing:-.025em;color:var(--orange)}
+.geo{display:inline-flex;align-items:center;gap:10px;margin-top:26px;font-size:13px;color:var(--ink-2)}
+.geo b{display:inline-grid;place-items:center;width:28px;height:20px;border:1px solid var(--line);border-radius:3px;color:#d81e2c;font-size:15px;line-height:1}
+
+.branch-wrap{--h:min(74vh,48vw);position:absolute;left:53.3%;top:-2vh;height:var(--h);aspect-ratio:1086/1448;margin-left:calc(var(--h) * -0.375);transform-origin:50% 0;z-index:3}
+.branch-px,.branch-swing{position:absolute;inset:0;transform-origin:50% 0}
+.branch-swing{animation:swing 7s ease-in-out infinite}
+@keyframes swing{0%,100%{transform:rotate(-1.1deg)}50%{transform:rotate(1.1deg)}}
+.branch-swing>img{width:100%;height:100%;filter:drop-shadow(0 30px 30px rgba(20,40,10,.22))}
+.mandarin-wrap{position:absolute;left:55.9%;top:19.9%;width:26%;transform-origin:50% 12%}
+.mandarin-wrap img{width:100%;filter:drop-shadow(0 18px 18px rgba(160,60,0,.28))}
+
+.hero-right{position:absolute;right:14.45vw;bottom:225px;max-width:335px;font-size:17px;line-height:1.55;z-index:4}
+.hero-right b{display:block;font-weight:700;margin-bottom:6px}
+.hero-distributor{display:block;margin-top:18px;color:var(--orange);font-size:12px;font-weight:700;letter-spacing:.1em;line-height:1.35;text-transform:uppercase}
+.hero-origin{display:flex;align-items:center;gap:12px;margin-bottom:23px;font-size:11px;font-weight:700;letter-spacing:.19em;text-transform:uppercase;color:#6e6a66;white-space:nowrap}
+.hero-origin .flag{display:block;width:50px;height:34px;border-radius:50%;font-size:0;box-shadow:0 7px 24px rgba(0,0,0,.06);background:linear-gradient(#e21e2b 0 0) center/18px 4px no-repeat,linear-gradient(#e21e2b 0 0) center/4px 18px no-repeat,radial-gradient(circle at 31% 31%,#e21e2b 0 2px,transparent 2.5px),radial-gradient(circle at 69% 31%,#e21e2b 0 2px,transparent 2.5px),radial-gradient(circle at 31% 69%,#e21e2b 0 2px,transparent 2.5px),radial-gradient(circle at 69% 69%,#e21e2b 0 2px,transparent 2.5px),#fff}
+.hero-origin .rule{width:26px;height:1px;background:#8f8a85}
+.scroll-hint{position:absolute;left:15.7vw;bottom:34px;display:flex;align-items:center;gap:12px;font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);z-index:4}
+.scroll-hint i{position:relative;width:22px;height:34px;border:1.5px solid currentColor;border-radius:12px}
+.scroll-hint i::after{content:"";position:absolute;left:50%;top:7px;width:3px;height:7px;margin-left:-1.5px;border-radius:2px;background:var(--orange);animation:wheel 1.6s infinite}
+@keyframes wheel{0%{transform:translateY(0);opacity:1}80%{transform:translateY(10px);opacity:0}100%{opacity:0}}
+
+/* ---------- hero frame details ---------- */
+.hero-decor{position:absolute;z-index:2;pointer-events:none;filter:drop-shadow(0 18px 24px rgba(25,45,18,.14))}
+.decor-leaf-tl{width:220px;left:-46px;top:-104px;transform:rotate(70deg)}
+.decor-orange-top{width:170px;left:73.5%;top:-118px}
+.decor-leaf-tr{width:210px;right:-58px;top:-118px;transform:rotate(158deg)}
+.decor-granat{width:190px;left:-38px;top:62%;transform:rotate(66deg)}
+.decor-leaf-bl{width:330px;left:-56px;bottom:-5px;transform:rotate(-4deg)}
+.decor-slice{width:90px;right:5.5%;top:34%;transform:rotate(43deg);filter:blur(4px) drop-shadow(0 12px 18px rgba(230,100,20,.18))}
+.decor-orange-low{width:105px;left:44.5%;top:61%;filter:blur(2px) drop-shadow(0 14px 20px rgba(180,70,0,.2))}
+
+.rain{position:absolute;inset:0;pointer-events:none;z-index:5}
+.rain img{position:absolute;left:50%;top:54%;filter:drop-shadow(0 20px 20px rgba(160,60,0,.25))}
+
+.product{position:absolute;left:50%;top:54%;width:0;height:0;z-index:6}
+.bottle{position:absolute;left:0;top:0;height:60vh;aspect-ratio:2/3}
+.bottle .b-img{position:relative;z-index:2;width:100%;height:100%;object-fit:contain}
+.bottle .b-reflect{position:absolute;left:0;top:96%;width:100%;height:100%;transform:scaleY(-1);opacity:0;z-index:1;-webkit-mask-image:linear-gradient(to top,rgba(0,0,0,.35),transparent 28%);mask-image:linear-gradient(to top,rgba(0,0,0,.35),transparent 28%)}
+.bottle .b-shadow{position:absolute;left:18%;right:18%;bottom:1.5%;height:5%;border-radius:50%;background:radial-gradient(closest-side,rgba(40,20,0,.45),rgba(40,20,0,0));filter:blur(4px);opacity:0;z-index:1}
+.bottle .b-glow{position:absolute;left:-55%;right:-55%;top:-10%;bottom:-10%;border-radius:50%;background:radial-gradient(closest-side,var(--gl,rgba(255,170,80,.55)),rgba(255,255,255,0) 72%);opacity:0;z-index:0}
+.bottle .b-fruit{position:absolute;z-index:1;opacity:0;width:95%;left:-30%;bottom:6%;filter:drop-shadow(0 20px 20px rgba(0,0,0,.18))}
+.bottle .trio-hint{position:absolute;z-index:4;left:50%;top:101%;width:max-content;max-width:320px;padding:16px 30px;transform:translateX(-50%) scale(1.56);transform-origin:50% 0;border:1px solid rgba(28,25,21,.08);border-radius:999px;background:rgba(255,255,255,.94);box-shadow:0 12px 22px rgba(50,32,12,.12);color:var(--ink);font-size:14px;font-weight:500;line-height:1;white-space:nowrap;opacity:0;pointer-events:none}
+.bottle[data-flavor=feijoa]{--gl:rgba(170,205,90,.5)}
+.bottle[data-flavor=granat]{--gl:rgba(230,70,100,.42)}
+.bottle[data-flavor=mandarin] .b-fruit{left:auto;right:-38%}
+.bottle[data-flavor=granat] .b-fruit{left:auto;right:-42%;bottom:10%}
+.bottle .b-img,.bottle{cursor:default}
+.trio-on .bottle{cursor:pointer}
+.spot{position:absolute;left:50%;top:0;width:60vh;height:100vh;margin-left:-30vh;background:radial-gradient(ellipse 50% 70% at 50% 0%,rgba(255,236,210,.9),rgba(255,255,255,0) 70%);opacity:0;z-index:1;pointer-events:none}
+.flash{position:absolute;left:50%;top:54%;width:40vh;height:40vh;margin:-20vh 0 0 -20vh;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,1) 0%,rgba(255,190,110,.6) 35%,rgba(255,255,255,0) 70%);opacity:0;z-index:7;pointer-events:none}
+
+.stage-title{position:absolute;left:0;right:0;top:11vh;text-align:center;font-family:var(--serif);font-weight:600;font-size:clamp(34px,4.2vw,72px);line-height:1;z-index:8;pointer-events:none}
+#trioTitle{top:16vh}
+.stage-title em{color:var(--orange)}
+.stage-title small{display:block;font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-2);margin-bottom:14px}
+
+.adv{position:absolute;left:50%;top:54%;z-index:8;width:240px;margin-left:-120px;margin-top:-60px;opacity:0}
+.adv-in{display:flex;gap:14px;align-items:center;padding:14px 18px 14px 14px;background:rgba(255,255,255,.72);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.9);border-radius:20px;box-shadow:0 24px 50px -20px rgba(120,60,10,.35)}
+.adv-in img{width:56px;height:56px;object-fit:contain;flex:none}
+.adv-in strong{display:block;font-family:var(--serif);font-size:30px;line-height:1;color:var(--orange);font-weight:700}
+.adv-in span{display:block;font-size:13px;line-height:1.35;color:var(--ink-2);margin-top:3px}
+
+.cap{position:absolute;top:80vh;width:330px;margin-left:-165px;text-align:center;z-index:8;opacity:0}
+.cap h3{font-family:var(--serif);font-size:clamp(26px,2.3vw,38px);line-height:1.2;font-weight:400}
+.cap-desc{max-width:286px;margin:22px auto 0;color:var(--ink-2);font-size:14px;line-height:1.5}
+.cap[data-flavor=mandarin]{--tint:#fff0e2;--c:var(--orange)}
+.cap[data-flavor=feijoa]{--tint:#eef4e1;--c:var(--feijoa)}
+.cap[data-flavor=granat]{--tint:#fbe6ea;--c:var(--granat)}
+
+/* ---------- generic sections ---------- */
+.sec{position:relative;padding:150px 6vw;overflow:hidden}
+.sec-head{max-width:980px;margin-bottom:70px}
+.sec-head.center{margin-left:auto;margin-right:auto;text-align:center}
+.h2{font-family:var(--serif);font-weight:600;font-size:clamp(40px,5.2vw,92px);line-height:.95;letter-spacing:-.01em;margin-top:18px}
+.h2 em{color:var(--orange);font-weight:500}
+@media (min-width:1101px){main h2{font-size:80px!important}}
+.lead{font-size:clamp(16px,1.3vw,20px);color:var(--ink-2);max-width:620px;margin-top:22px}
+.center .lead{margin-left:auto;margin-right:auto}
+.float{position:absolute;pointer-events:none;z-index:0;filter:drop-shadow(0 30px 30px rgba(0,0,0,.12))}
+
+/* compare */
+#compare{background:var(--cream)}
+.cmp{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:22px;position:relative;z-index:1}
+.cmp-card{position:relative;background:#fff;border-radius:28px;padding:34px 30px 30px;border:1px solid var(--line);overflow:hidden}
+.cmp-card.hl{background:linear-gradient(160deg,#fff 0%,#fff3e6 100%);border-color:rgba(228,80,28,.35);box-shadow:0 40px 80px -40px rgba(228,80,28,.45)}
+.cmp-card .big{font-family:var(--serif);font-weight:700;font-size:clamp(64px,7vw,120px);line-height:.85;color:var(--ink)}
+.cmp-card.hl .big{color:var(--orange)}
+.cmp-card .lbl{font-size:13px;color:var(--ink-2);margin:6px 0 24px}
+.cmp-card h3{font-family:var(--serif);font-size:30px;font-weight:600;margin-bottom:14px}
+.cmp-card ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+.cmp-card li{display:flex;gap:10px;align-items:flex-start;font-size:15px}
+.cmp-card li::before{content:"✓";flex:none;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:800;background:#ffe2d1;color:var(--orange);margin-top:1px}
+.cmp-card.neg li::before{content:"×";background:#f4dcdc;color:#b33}
+.cmp-card .pic{position:absolute;right:-60px;top:-30px;width:250px;opacity:.95}
+.cmp-sum{margin-top:22px;display:flex;flex-wrap:wrap;gap:12px 26px;align-items:center;padding:24px 30px;border-radius:24px;background:var(--ink);color:#fff;position:relative;z-index:1}
+.cmp-sum b{font-family:var(--serif);font-size:26px;font-weight:600;margin-right:auto}
+.cmp-sum b em{color:var(--orange-2)}
+.cmp-sum span{display:flex;align-items:center;gap:8px;font-size:15px}
+.cmp-sum span::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--orange-2)}
+
+/* formats — the card row crosses the final three-flavour frame before recipes */
+#seasons{position:fixed;inset:0;z-index:12;margin:0;padding:0;background:transparent;visibility:hidden;pointer-events:none}
+#seasons.seasons-released{position:relative;inset:auto;height:100vh;height:100svh;margin:-100vh 0 0;visibility:visible;pointer-events:auto}
+.hz{height:100vh;height:100svh;box-sizing:border-box;display:flex;align-items:flex-start;padding-top:8vh;overflow:hidden;background:transparent}
+.hz-track{display:flex;gap:26px;padding:0 3vw 0 28vw;align-items:center;will-change:transform}
+.season{flex:none;position:relative;width:1400px;height:945px;aspect-ratio:1400/945;border-radius:28px;overflow:hidden;padding:76px 60px 62px;color:var(--ink)}
+.season.green{background:#e2eec8}
+.season.orange{background:#ffe0ba}
+.season.red{background:#f5ccd4}
+.season .num{display:none}
+.season-copy{position:relative;z-index:3;display:flex;flex-direction:column;width:540px;height:100%}
+.season h3{font-family:var(--serif);font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-.035em;text-transform:uppercase}
+.season-pack{display:inline-flex;align-self:flex-start;margin-top:30px;padding:9px 15px;border-radius:999px;background:rgba(255,255,255,.9);font-size:18px;font-weight:500;line-height:1;letter-spacing:0}
+.season .rate{margin-top:108px;font-family:var(--serif);font-size:290px;font-weight:400;line-height:.76;letter-spacing:-.07em;color:#fff}
+.season .rate-label{display:block;margin:20px 0 0 24px;font-size:18px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;color:rgba(27,24,20,.68)}
+.season-table{width:540px;margin-top:auto;border-collapse:collapse;font-size:24px;line-height:1.2}
+.season-table td{padding:8px 0;border-bottom:1px solid rgba(27,24,20,.16)}
+.season-table td:last-child{text-align:right;white-space:nowrap}
+.season-visual{position:absolute;z-index:2;right:0;top:0;width:62%;height:100%;pointer-events:none}
+.season-visual img{position:absolute;object-fit:contain;filter:drop-shadow(0 24px 22px rgba(55,35,12,.18))}
+.season.green .b330-mandarin{left:40%;bottom:14%;height:51%}
+.season.green .b330-feijoa{right:24%;bottom:7%;height:66%}
+.season.green .b330-granat{right:-3%;bottom:-9%;height:50%}
+.season.green .branch{right:-8%;top:-16%;width:61%;filter:none;transform:rotate(18deg)}
+.season.orange .b850{right:27%;bottom:-9%;height:102%}
+.season.orange .b-feijoa{right:8%;bottom:-5%;height:80%}
+.season.orange .b-granat{right:-15%;bottom:-7%;height:80%}
+.season.orange .fruit-top{right:-4%;top:-18%;width:67%;filter:none}
+.season.orange .leaf-side{left:-18%;bottom:36%;width:42%;filter:none;transform:rotate(15deg)}
+.season.red .bucket{right:-7%;bottom:-17%;width:78%;filter:drop-shadow(0 26px 20px rgba(90,30,30,.16))}
+.season.red .seeds{right:7%;top:5%;width:48%;filter:none}
+.season.red .leaf-side{right:-7%;top:-8%;width:39%;filter:none;transform:rotate(24deg)}
+
+/* recipes showcase */
+.recipes-showcase{min-height:100vh;padding:76px 6vw 36px;background:#fbf6ef}
+.recipes-intro{display:grid;grid-template-columns:1.25fr .75fr;gap:7vw;align-items:end}
+.recipes-kicker{display:flex;align-items:center;gap:10px;margin-bottom:20px;color:var(--ink-2);font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase}
+.recipes-kicker::before{content:"";width:26px;height:1px;background:currentColor}
+.recipes-title{font-family:var(--serif);font-size:clamp(64px,7vw,126px);font-weight:400;line-height:.78;letter-spacing:-.025em}
+.recipes-title em{display:block;margin:14px 0 0 2ch;color:var(--orange);font-weight:400}
+.recipes-lead{max-width:510px;margin-left:clamp(24px,3.4vw,64px);padding-bottom:8px;color:var(--ink-2);font-size:17px;line-height:1.65}
+.recipes-body{display:grid;grid-template-columns:minmax(320px,.9fr) minmax(520px,1.1fr);gap:7vw;align-items:center;margin-top:170px}
+.recipes-art{position:relative;min-height:570px}
+.recipes-art::before{content:"";position:absolute;left:5%;right:2%;bottom:2%;height:55%;border-radius:50%;background:radial-gradient(closest-side,rgba(255,168,82,.24),rgba(255,255,255,0) 72%)}
+.recipes-art .glass{position:absolute;left:10%;bottom:0;width:min(78%,560px);z-index:2;filter:drop-shadow(0 36px 34px rgba(112,55,10,.22))}
+.recipes-art .leaf-a{position:absolute;left:-8%;bottom:4%;width:42%;z-index:3;transform:rotate(-14deg);filter:drop-shadow(0 20px 22px rgba(30,65,20,.2))}
+.recipes-art .fruit-a{position:absolute;right:1%;bottom:-1%;width:48%;z-index:4;transform:rotate(-7deg);filter:drop-shadow(0 20px 24px rgba(210,80,0,.2))}
+.recipes-catalog{align-self:stretch;display:flex;flex-direction:column;justify-content:center}
+.recipes-catalog-head{display:flex;justify-content:space-between;padding-bottom:14px;color:var(--ink-2);font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
+.recipe-row{width:100%;display:grid;grid-template-columns:42px minmax(180px,.8fr) 1.5fr 28px;gap:16px;align-items:center;min-height:76px;border-top:1px solid var(--line);text-align:left;transition:color .25s,background .25s}
+.recipe-row:last-of-type{border-bottom:1px solid var(--line)}
+.recipe-row:hover{color:var(--orange);background:rgba(255,255,255,.45)}
+.recipe-row .n{font-size:10px;font-weight:700;color:var(--ink-2)}
+.recipe-row strong{font-family:var(--serif);font-size:30px;font-weight:400;line-height:1}
+.recipe-row p{color:var(--ink-2);font-size:13px;line-height:1.45}
+.recipe-row .arrow{font-size:24px;color:var(--orange);transition:transform .25s}
+.recipe-row:hover .arrow{transform:translateX(6px)}
+.recipes-foot{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-top:20px;color:var(--ink-2);font-size:11px}
+.recipes-all{padding-bottom:3px;border-bottom:1px solid currentColor;color:var(--ink);font-weight:700}
+
+/* uses */
+#uses{background:#fff}
+.uses{display:grid;grid-template-columns:1.1fr 1fr;gap:5vw;align-items:center}
+.uses-video{position:relative;aspect-ratio:1;max-width:620px;width:100%;margin:0 auto;overflow:hidden;background:#fff}
+.uses-video video{display:block;width:100%;height:100%;object-fit:cover}
+.checks{list-style:none;display:flex;flex-direction:column;gap:26px;margin-top:40px}
+.checks li{display:grid;grid-template-columns:44px 1fr;gap:16px;align-items:center;font-size:18.7px;font-weight:600;line-height:1.35}
+.checks li i{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:#fff;border:1px solid var(--line);font-style:normal;font-family:var(--serif);font-weight:700;font-size:20px;color:var(--orange)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:110px;border-top:1px solid var(--line);padding-top:50px}
+.stat strong{display:block;font-family:var(--serif);font-weight:600;font-size:clamp(54px,6vw,104px);line-height:.9}
+.stat strong sup{font-size:.42em;vertical-align:top;margin-left:4px;color:var(--orange)}
+.stat>span{display:block;color:var(--ink-2);font-size:14px;margin-top:10px;max-width:220px}
+
+/* fillings */
+#fillings{padding:0;min-height:0;background:#f7dfc4;color:var(--navy);isolation:isolate}
+.fill{position:relative;height:clamp(720px,56.3vw,980px);min-height:720px;overflow:hidden;background:url('fillings-scene.png') center/cover no-repeat}
+.fill-copy{position:absolute;z-index:5;left:clamp(30px,7.5vw,160px);top:clamp(100px,14vh,180px);max-width:620px}
+#fillings .eyebrow{color:var(--navy)}
+.fill-copy .h2{font-size:80px;line-height:.82;margin-top:22px;color:var(--navy)}
+.fill-copy .h2 .fill-first{white-space:nowrap}
+.fill-copy .lead{max-width:350px;color:var(--navy);font-size:15px;line-height:1.45}
+
+/* contact */
+#contact{background:#171614;color:#fff;padding:62px clamp(36px,5vw,80px) 20px}
+.cta{position:relative;display:grid;grid-template-columns:minmax(0,1.08fr) minmax(390px,.92fr);gap:clamp(70px,14vw,240px);padding:0 0 50px;max-width:none}
+.cta .bottle-mini{display:none}
+.cta .eyebrow{color:rgba(255,255,255,.62)}
+.cta .h2{max-width:650px;color:#fff}
+.cta .lead{max-width:580px;color:rgba(255,255,255,.72)}
+.offer-scope{margin-top:28px;max-width:560px}
+.offer-scope h3{font-family:var(--sans);font-size:15px;font-weight:600;letter-spacing:0;color:#fff;text-transform:none}
+.offer-list{display:flex;flex-wrap:wrap;gap:10px;list-style:none;margin-top:24px}
+.offer-list li{padding:8px 17px;border:1px solid rgba(255,255,255,.76);border-radius:999px;font-size:13px;line-height:1.1}
+.offer-note{margin-top:31px;font-size:14px;color:var(--orange)}
+.contact-actions{display:flex;align-items:center;gap:4px;width:max-content;margin-top:24px;padding:5px;border-radius:999px;background:var(--navy)}
+.contact-actions a{display:inline-flex;align-items:center;gap:9px;height:40px;padding:0 16px 0 7px;border-radius:999px;color:#fff;font-size:14px;font-weight:600}
+.contact-actions .buy{background:var(--orange)}
+.contact-actions .ico{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:#fff;color:var(--orange);font-size:14px;font-weight:800}
+.contact-actions .taste .ico{background:transparent;color:#fff}
+.contact-actions svg{width:18px;height:18px}
+.dock.contact-hidden{opacity:0;transform:translateY(20px);pointer-events:none}
+.form{position:relative;z-index:2;display:flex;flex-direction:column;gap:12px;background:rgba(255,255,255,.8);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding:30px;border-radius:28px;border:1px solid var(--line)}
+.form label{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2)}
+.form input,.form select{width:100%;height:52px;border-radius:14px;border:1px solid var(--line);padding:0 16px;font:inherit;font-size:16px;background:#fff;margin-top:6px;color:var(--ink)}
+.form input:focus,.form select:focus{outline:2px solid var(--orange);outline-offset:1px}
+.seg{display:flex;gap:6px;margin-top:6px}
+.seg label{flex:1;position:relative;text-transform:none;letter-spacing:0;font-size:14px}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg span{display:grid;place-items:center;height:46px;border-radius:12px;border:1px solid var(--line);cursor:pointer;color:var(--ink);font-weight:600;transition:.25s}
+.seg input:checked+span{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn{height:56px;border-radius:999px;background:var(--orange);color:#fff;font-weight:700;font-size:16px;margin-top:8px;transition:background .3s,transform .3s}
+.btn:hover{background:#ff6a33;transform:translateY(-2px)}
+.form-ok{display:none;font-family:var(--serif);font-size:28px;text-align:center;padding:40px 0}
+.footer{display:flex;flex-wrap:wrap;gap:30px;justify-content:space-between;align-items:flex-start;padding:38px 0 0;color:rgba(255,255,255,.58);font-size:14px;border-top:1px solid rgba(255,255,255,.14)}
+.footer img{width:120px;margin-bottom:12px}
+.footer nav{display:flex;flex-wrap:wrap;gap:10px 26px;max-width:520px}
+.footer nav a:hover{color:var(--orange)}
+
+/* ---------- lead modal ---------- */
+.lead-modal{position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:24px;visibility:hidden;opacity:0;transition:opacity .28s ease,visibility .28s}
+.lead-modal.open{visibility:visible;opacity:1}
+.lead-backdrop{position:absolute;inset:0;background:rgba(21,24,18,.52);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}
+.lead-dialog{position:relative;width:min(480px,100%);max-height:calc(100svh - 48px);overflow:auto;padding:34px;border-radius:28px;background:#fbf6ef;box-shadow:0 34px 90px rgba(0,0,0,.28);transform:translateY(24px) scale(.97);transition:transform .38s var(--ease)}
+.lead-modal.open .lead-dialog{transform:none}
+.lead-close{position:absolute;right:18px;top:16px;width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:#fff;font-size:25px;line-height:1;display:grid;place-items:center;transition:background .25s,color .25s,transform .25s}
+.lead-close:hover{background:var(--ink);color:#fff;transform:rotate(90deg)}
+.lead-kicker{margin-bottom:10px;color:var(--orange);font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
+.lead-title{max-width:390px;padding-right:38px;font-family:var(--serif);font-size:clamp(40px,4vw,52px);font-weight:400;line-height:.9}
+.lead-copy{max-width:370px;margin:14px 0 22px;color:var(--ink-2);font-size:13px;line-height:1.55}
+.lead-form{display:flex;flex-direction:column;gap:11px}
+.lead-form label{display:block;color:#625d56;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.lead-form input,.lead-form select{width:100%;height:50px;margin-top:6px;padding:0 14px;border:1px solid var(--line);border-radius:13px;background:#fff;font:500 14px var(--sans);color:var(--ink);outline:none;transition:border-color .2s,box-shadow .2s}
+.lead-form input::placeholder{color:#77716b}
+.lead-form input:focus,.lead-form select:focus{border-color:var(--orange);box-shadow:0 0 0 2px rgba(228,80,28,.18)}
+.lead-submit{height:54px;margin-top:6px;border-radius:999px;background:#d74612;color:#fff;font-weight:700;transition:background .25s,transform .25s}
+.lead-submit:hover{background:#ef581e;transform:translateY(-2px)}
+.lead-privacy{display:block;margin-top:2px;text-align:center;color:#746e67;font-size:9px;line-height:1.45}
+.lead-success{display:none;padding:34px 0 20px;text-align:center}
+.lead-success h3{font-family:var(--serif);font-size:48px;font-weight:400;line-height:1}
+.lead-success p{margin-top:12px;color:var(--ink-2);font-size:14px}
+body.lead-open{overflow:hidden}
+
+/* ---------- recipes overlay ---------- */
+.rc{position:fixed;inset:0;z-index:50;visibility:hidden}
+.rc-bg{position:absolute;inset:0;background:#fff;clip-path:circle(0% at 50% 50%)}
+.rc-glow{position:absolute;right:-10vw;top:10vh;width:60vw;height:80vh;border-radius:50%;background:radial-gradient(closest-side,var(--rcg,rgba(255,180,100,.45)),rgba(255,255,255,0));opacity:0;transition:background .6s}
+.rc-close{position:absolute;top:22px;right:4vw;z-index:4;width:46px;height:46px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;font-size:22px;background:#fff;transition:.3s}
+.rc-close:hover{background:var(--ink);color:#fff;transform:rotate(90deg)}
+.rc-main{position:absolute;inset:0;display:grid;grid-template-columns:1fr minmax(300px,30vw);z-index:2}
+.rc-left{position:relative;display:flex;flex-direction:column;min-height:0;padding:30px 0 0 4vw}
+.rc-head{position:relative;z-index:5;order:0;flex:0 0 auto;padding:0 2vw 18px 0;display:flex;justify-content:space-between;align-items:flex-end;gap:20px;background:#fff}
+.rc-head img{width:110px;margin-bottom:22px}
+.rc-title{font-family:var(--serif);font-weight:600;font-size:clamp(48px,5vw,88px);line-height:.9}
+.rc-title em{color:var(--c,var(--orange))}
+.rc-count{font-size:14px;color:var(--ink-2);white-space:nowrap}
+.rc-scroll{position:relative;z-index:1;order:2;flex:1;min-height:0;overflow:auto;padding:10px 2vw 30px 0;overscroll-behavior:contain;scrollbar-width:thin;isolation:isolate;clip-path:inset(0)}
+.rc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}
+.tile{position:relative;border-radius:26px;background:var(--tint);padding:0;display:flex;flex-direction:column;min-height:330px;overflow:hidden;cursor:pointer;transition:box-shadow .4s}
+.tile:hover{box-shadow:0 30px 60px -30px rgba(0,0,0,.35)}
+.tile[data-flavor=mandarin]{--tint:#fff1e3;--c:var(--orange)}
+.tile[data-flavor=feijoa]{--tint:#eef4e1;--c:var(--feijoa)}
+.tile[data-flavor=granat]{--tint:#fce8ec;--c:var(--granat)}
+.tile-media{position:relative;height:250px;border-radius:0;background:#fff;border:0;box-shadow:none;overflow:hidden}
+.tile-media img{width:100%;height:100%;object-fit:cover;border-radius:0;transition:transform .7s var(--ease)}
+.tile:hover .tile-media img{transform:scale(1.08)}
+.tile-meta{display:flex;justify-content:space-between;margin:14px 18px 0;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--c)}
+.tile h3{font-family:var(--serif);font-size:23px;font-weight:600;line-height:1.2;margin:8px 18px}
+.tile .ingredients{margin:0 18px 18px;padding:0;list-style:none;font-size:14px;color:var(--ink-2);line-height:1.45}
+.tile .ingredients li{position:relative;padding-left:10px}
+.tile .ingredients li::before{content:"·";position:absolute;left:0;color:var(--c);font-weight:700}
+.tile .steps{max-height:0;overflow:hidden;margin:0 18px 18px;transition:max-height .6s var(--ease)}
+.tile.open .steps{max-height:400px}
+.tile .steps p{padding-top:10px;border-top:1px dashed rgba(0,0,0,.15);margin-top:10px;color:var(--ink);font-size:14px;line-height:1.35}
+.rc-tabs{position:relative;left:auto;bottom:auto;z-index:5;order:1;align-self:flex-start;display:flex;gap:6px;margin:0 2vw 18px 0;padding:6px;border-radius:999px;background:rgba(255,255,255,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);box-shadow:0 20px 40px -20px rgba(0,0,0,.25);max-width:calc(100% - 4vw);overflow-x:auto;scrollbar-width:none}
+.rc-tabs button{height:42px;padding:0 18px;border-radius:999px;font-size:14px;font-weight:600;white-space:nowrap;transition:background .3s,color .3s}
+.rc-tabs button:hover{background:rgba(0,0,0,.05)}
+.rc-tabs button.on{background:var(--ink);color:#fff}
+.rc-side{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:90px 2vw 110px}
+.rc-slot{position:relative;height:56vh;aspect-ratio:2/3}
+.rc-slot>#rcBottle{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;transform:scale(1.15)}
+.rc-all-bottles{position:absolute;inset:0;opacity:0;pointer-events:none}
+.rc-all-bottles img{position:absolute;bottom:0;width:58%;height:100%;object-fit:contain;filter:drop-shadow(0 18px 18px rgba(40,20,0,.2))}
+.rc-all-bottles img:nth-child(1){left:6%;bottom:3%;height:88%;z-index:1;transform:rotate(-6deg) scale(1.012)}
+.rc-all-bottles img:nth-child(2){left:21%;z-index:2;transform:scale(1.242)}
+.rc-all-bottles img:nth-child(3){right:6%;bottom:3%;height:88%;z-index:1;transform:rotate(6deg) scale(1.012)}
+.rc-slot::after{content:"";position:absolute;left:18%;right:18%;bottom:0;height:5%;border-radius:50%;background:radial-gradient(closest-side,rgba(40,20,0,.4),rgba(40,20,0,0));z-index:-1}
+.rc-fname{font-family:var(--serif);font-size:30px;font-weight:600;margin-top:16px;text-align:center;line-height:1}
+.rc-flavors{display:flex;gap:8px;margin-top:18px}
+.rc-flavors button{width:58px;height:72px;border-radius:16px;border:1px solid var(--line);background:#fff;display:grid;place-items:center;transition:.3s}
+.rc-flavors button img{height:60px}
+.rc-flavors button.all-flavors{font-size:11px;font-weight:700;letter-spacing:.04em}
+.rc-flavors button.on{border-color:var(--ink);box-shadow:0 10px 20px -10px rgba(0,0,0,.4)}
+.fly{position:fixed;z-index:60;object-fit:contain;pointer-events:none}
+
+/* ---------- responsive ---------- */
+@media (max-width:1100px){
+  .cmp{grid-template-columns:1fr}
+  .uses,.fill,.cta{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .hz-track{padding-left:22vw}
+  .season{width:68vw;height:52vh}
+  .recipes-body{grid-template-columns:.75fr 1.25fr;gap:3vw}
+  .recipe-row{grid-template-columns:34px minmax(150px,.8fr) 1fr 24px}
+}
+@media (max-width:760px){
+  .sidenav{display:none}
+  .topbar{padding:14px 20px}
+  .pill{height:42px;padding:0 16px}
+  .burger{width:42px;padding:0}
+  .dock{left:16px;right:16px;bottom:14px;justify-content:space-between}
+  .dock a{flex:1;justify-content:center;padding:0 14px 0 6px}
+  .contact-actions{display:none}
+  .hero-left{left:16px;right:16px;top:16vh;max-width:none}
+  .hero-left .logo{width:110px;margin-bottom:18px}
+  .hero-title{font-size:12.5vw;max-width:84vw;margin-bottom:14px}
+  .hero-sub{font-size:9vw}
+  .branch-wrap{--h:54vh;left:73%;top:36vh}
+  .hero-right{left:16px;right:16px;bottom:96px;max-width:none;font-size:15px}
+  .hero-distributor{margin-top:12px;font-size:10px}
+  .hero-origin{display:none}
+  .scroll-hint{display:none}
+  .bg-word{top:4vh;font-size:26vw}
+  .hero-decor{display:none}
+  .sec.recipes-showcase{padding:80px 16px 45px}
+  .recipes-intro,.recipes-body{grid-template-columns:1fr}
+  .recipes-title{font-size:17vw;line-height:.82}
+  .recipes-title em{margin-left:0}
+  .recipes-lead{margin-left:0;font-size:15px;margin-top:24px}
+  .recipes-body{margin-top:54px}
+  .recipes-art{min-height:390px}
+  .recipes-art .glass{left:12%;width:70%}
+  .recipes-art .fruit-a{width:52%}
+  .recipe-row{grid-template-columns:28px 1fr 24px;gap:10px;min-height:68px}
+  .recipe-row strong{font-size:25px}
+  .recipe-row p{display:none}
+  .recipes-foot{align-items:flex-start;flex-direction:column}
+  .lead-modal{padding:12px}
+  .lead-dialog{max-height:calc(100svh - 24px);padding:28px 20px 22px;border-radius:24px}
+  .lead-title{font-size:40px}
+  .lead-close{right:14px;top:14px}
+  .bottle{height:54vh}
+  .stage-title{top:12vh;padding:0 16px;font-size:9vw}
+  .adv{width:170px;margin-left:-85px}
+  .adv-in{padding:10px 12px 10px 10px;gap:10px;border-radius:16px}
+  .adv-in img{width:36px;height:36px}
+  .adv-in strong{font-size:22px}
+  .adv-in span{font-size:11px}
+  .cap{width:31vw;margin-left:-15.5vw;top:62vh}
+  .cap h3{font-size:20px}
+  .bottle .trio-hint{padding:12px 22px;transform:translateX(-50%) scale(1.79);font-size:14px}
+  .sec{padding:100px 16px}
+  #seasons{margin:0}
+  .hz-track{gap:16px;padding-left:10vw}
+  .season{width:86vw;height:68vh;padding:24px 20px}
+  .season h3{font-size:34px}
+  .season-table{font-size:10px}
+  .season-visual{width:58%}
+  .stats{grid-template-columns:1fr 1fr;margin-top:70px}
+  #fillings{min-height:780px}
+  .fill{min-height:780px;background-position:58% center}
+  .fill-copy{left:24px;right:24px;top:108px;max-width:330px}
+  .fill-copy .h2{font-size:58px;line-height:.84}
+  .fill-copy .lead{font-size:14px;max-width:290px}
+  #contact{padding:70px 16px 16px}
+  .cta{padding:0 0 48px;border-radius:0}
+  .offer-scope{margin-top:32px}
+  .offer-list{gap:10px 18px}
+  .offer-list li{font-size:15px}
+  .footer{padding-top:28px;gap:20px;font-size:12px}
+  .menu{grid-template-columns:1fr;padding:100px 20px 120px}
+  .menu-aside{display:none}
+  .rc-main{grid-template-columns:1fr;grid-template-rows:auto 1fr}
+  .rc-side{order:-1;flex-direction:row;padding:76px 16px 0;gap:14px;justify-content:flex-start}
+  .rc-slot{height:150px}
+  .rc-all-bottles img{width:58%;filter:drop-shadow(0 8px 10px rgba(40,20,0,.18))}
+  .rc-fname{font-size:22px;text-align:left;margin:0}
+  .rc-flavors{margin-top:10px}
+  .rc-flavors button{width:44px;height:54px}
+  .rc-flavors button img{height:44px}
+  .rc-left{padding:10px 0 0 16px}
+  .rc-head img{display:none}
+  .rc-grid{grid-template-columns:1fr 1fr;gap:10px}
+  .tile{min-height:260px;padding:0;border-radius:20px}
+  .tile-media{height:110px}
+  .tile-meta{margin:12px 12px 0;font-size:9px}
+  .tile h3{font-size:23px;line-height:1.2}
+  .tile h3{margin:7px 12px}
+  .tile .ingredients{margin-left:12px;margin-right:12px;margin-bottom:12px;font-size:14px}
+  .tile .steps{margin-left:12px;margin-right:12px;margin-bottom:12px;font-size:12px}
+  .tile .steps p{font-size:14px}
+  .rc-tabs{left:auto;right:auto;bottom:auto;margin:0 16px 14px 0;max-width:calc(100% - 16px)}
+}
+@media (prefers-reduced-motion:reduce){
+  .branch-swing,.scroll-hint i::after{animation:none}
+}
+</style>
+</head>
+<body>
+
+<div class="loader" id="loader">
+  <div class="loader-in">
+    <img src="assets/logo.png" alt="QUEETELI">
+    <div class="loader-bar"><i></i></div>
+    <div class="loader-num">0%</div>
+  </div>
+</div>
+
+<!-- top bar -->
+<header class="topbar">
+  <a href="#stage" data-goto="hero"><img class="top-logo" src="assets/logo.png" alt="QUEETELI"></a>
+  <div class="top-actions">
+    <button class="pill pill-light" data-recipes>Рецепты</button>
+    <button class="pill pill-light burger" id="burger" aria-label="Меню"><i></i><i></i></button>
+  </div>
+</header>
+
+<!-- side nav -->
+<nav class="sidenav" id="sidenav">
+  <a href="#" data-goto="hero"><span>Главная</span><i></i></a>
+  <a href="#" data-goto="bottle"><span>Эликсир</span><i></i></a>
+  <a href="#" data-goto="trio"><span>Три вкуса</span><i></i></a>
+  <a href="#seasons" data-goto="#seasons"><span>Сезоны</span><i></i></a>
+  <a href="#recipes-showcase" data-goto="#recipes-showcase"><span>Рецепты</span><i></i></a>
+  <a href="#uses" data-goto="#uses"><span>Для HoReCa</span><i></i></a>
+  <a href="#fillings" data-goto="#fillings"><span>Начинки</span><i></i></a>
+  <a href="#contact" data-goto="#contact"><span>Контакты</span><i></i></a>
+</nav>
+
+<!-- fixed CTA -->
+<div class="dock" id="dock">
+  <a class="buy" href="#contact" data-goto="#contact" data-mode="buy"><span class="ico">₽</span>Купить</a>
+  <a class="taste" href="#contact" data-goto="#contact" data-mode="taste"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M7 3h10l-1 7a4 4 0 0 1-8 0L7 3Z"/><path d="M12 14v6M8 21h8"/></svg></span>Дегустация</a>
+</div>
+
+<!-- menu -->
+<div class="menu" id="menu">
+  <div class="menu-links">
+    <a href="#" data-goto="trio"><small>01</small><span class="t">Продукты</span></a>
+    <a href="#" data-goto="#fillings"><small>02</small><span class="t">Начинки</span></a>
+    <a href="#" data-recipes><small>03</small><span class="t">Рецепты</span></a>
+    <a href="#" data-goto="#uses"><small>04</small><span class="t">Условия работы</span></a>
+    <a href="#" data-goto="#contact"><small>05</small><span class="t">Как купить</span></a>
+  </div>
+  <div class="menu-aside">
+    <img src="assets/bottle-granat.png" alt="">
+    <p>Authentic product of Georgia. Эликсиры и начинки из натуральных фруктов Аджарии и Кахетии.</p>
+  </div>
+</div>
+
+<main>
+<!-- ============ PINNED STORY ============ -->
+<section id="stage">
+  <div class="stage-in" id="stageIn">
+    <div class="vid-wrap"><video class="stage-video" id="stageVideo" muted playsinline preload="auto"></video></div>
+    <div class="blob b1" data-mouse="18"></div>
+    <div class="blob b2" data-mouse="-14"></div>
+    <div class="blob b3" data-mouse="10"></div>
+    <div class="spot" id="spot"></div>
+
+    <div class="bg-word fx" id="bgWord"><span class="px" data-mouse="-12">QUEETELI</span></div>
+
+    <img class="hero-decor decor-leaf-tl" src="assets/leaf.png" alt="">
+    <img class="hero-decor decor-orange-top" src="assets/orange.png" alt="">
+    <img class="hero-decor decor-leaf-tr" src="assets/leaf.png" alt="">
+    <img class="hero-decor decor-granat" src="assets/granat-piece.png" alt="">
+    <img class="hero-decor decor-leaf-bl" src="assets/leaf.png" alt="">
+    <img class="hero-decor decor-slice" src="assets/mandarin-slice.png" alt="">
+    <img class="hero-decor decor-orange-low" src="assets/orange.png" alt="">
+
+    <div class="hero-left" id="heroLeft">
+      <img class="logo" src="assets/logo.png" alt="QUEETELI">
+      <div class="eyebrow">Authentic product of Georgia</div>
+      <h1 class="hero-title fx" id="heroTitle">Эликсиры<br><em>и начинки</em></h1>
+      <div class="hero-sub fx" id="heroSub">из натуральных<br>фруктов</div>
+      <div class="geo"><b>✚</b>Аджария · Гурия · Кахетия</div>
+    </div>
+
+    <div class="branch-wrap" id="branch">
+      <div class="branch-px" data-mouse="8">
+        <div class="branch-swing">
+          <img src="assets/branch.png" alt="Ветка мандарина">
+          <div class="mandarin-wrap" id="mandarin"><img src="assets/mandarin.png" alt="Аджарский мандарин"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-right" id="heroRight">
+      <div class="hero-origin"><span class="flag"></span><span class="rule"></span><span>Authentic product of Georgia</span></div>
+      <b>Концентрированные основы для:</b>
+      холодных и горячих напитков, коктейлей, десертов, кондитерских изделий, соусов
+      <span class="hero-distributor">Дистрибьютер по Самарской области</span>
+    </div>
+    <div class="scroll-hint" id="scrollHint"><i></i>Листайте</div>
+
+    <div class="rain" id="rain"></div>
+    <div class="flash" id="flash"></div>
+
+    <div class="product" id="product">
+      <div class="bottle" data-flavor="feijoa">
+        <div class="b-glow"></div><img class="b-fruit" src="assets/feijoa-halves.png" alt="">
+        <img class="b-reflect" src="assets/bottle-feijoa.png" alt=""><div class="b-shadow"></div>
+        <img class="b-img" src="assets/bottle-feijoa.png" alt="Эликсир Гурийский фейхоа">
+        <span class="trio-hint">Экзотический аромат</span>
+      </div>
+      <div class="bottle" data-flavor="granat">
+        <div class="b-glow"></div><img class="b-fruit" src="assets/granat-piece.png" alt="">
+        <img class="b-reflect" src="assets/bottle-granat.png" alt=""><div class="b-shadow"></div>
+        <img class="b-img" src="assets/bottle-granat.png" alt="Эликсир Горный гранат">
+        <span class="trio-hint">Антиоксидант</span>
+      </div>
+      <div class="bottle" data-flavor="mandarin">
+        <div class="b-glow"></div><img class="b-fruit" src="assets/mandarin-halves.png" alt="">
+        <img class="b-reflect" src="assets/bottle-mandarin.png" alt=""><div class="b-shadow"></div>
+        <img class="b-img" src="assets/bottle-mandarin.png" alt="Эликсир Аджарский мандарин">
+        <span class="trio-hint">Высокая концентрация</span>
+      </div>
+    </div>
+
+    <h2 class="stage-title fx" id="advTitle"><small>Эликсир · концентрат</small>Фрукт, <em>собранный</em> в бутылку</h2>
+    <h2 class="stage-title fx" id="trioTitle"><small>Линейка эликсиров · 330 г и 850 г</small>Три вкуса <em>Грузии</em></h2>
+
+    <div class="adv" data-d="-30,-19" data-m="-22,-21"><div class="adv-in"><img src="assets/mandarin-halves.png" alt=""><div><strong>60%</strong><span>фруктовой части в каждом эликсире</span></div></div></div>
+    <div class="adv" data-d="28,-21" data-m="22,-12"><div class="adv-in"><img src="assets/mandarin.png" alt=""><div><strong>5 кг</strong><span>мандаринов в одной бутылке 330 г</span></div></div></div>
+    <div class="adv" data-d="-33,8" data-m="-22,14"><div class="adv-in"><img src="assets/leaf.png" alt=""><div><strong>100%</strong><span>натуральный концентрат без лишнего</span></div></div></div>
+    <div class="adv" data-d="31,6" data-m="22,23"><div class="adv-in"><img src="assets/smoothie.png" alt=""><div><strong>1 : 6</strong><span>напитки, коктейли, десерты, соусы</span></div></div></div>
+    <div class="adv" data-d="-22,30" data-m="-99,99"><div class="adv-in"><img src="assets/mandarin-slice.png" alt=""><div><strong>12 мес</strong><span>срок хранения без потери вкуса</span></div></div></div>
+    <div class="adv" data-d="21,31" data-m="-99,99"><div class="adv-in"><img src="assets/orange.png" alt=""><div><strong>Premium</strong><span>яркий вкус, стабильное качество</span></div></div></div>
+
+    <div class="cap" data-flavor="feijoa" data-k="-1">
+      <h3>Гурийский фейхоа</h3>
+      <p class="cap-desc">Уникальный профиль для авторских напитков, сезонного меню и чайных капель.</p>
+    </div>
+    <div class="cap" data-flavor="mandarin" data-k="0">
+      <h3>Аджарский мандарин</h3>
+      <p class="cap-desc">Цитрусовый вкус. Идеально для лимонадов, горячих чаёв, бамблов, десертов и топпингов.</p>
+    </div>
+    <div class="cap" data-flavor="granat" data-k="1">
+      <h3>Горный гранат</h3>
+      <p class="cap-desc">Глубокий вкус для лимонадов, коктейлей, соусов и десертов.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SEASONS (horizontal pin) ============ -->
+<section id="seasons">
+  <div class="hz" id="hz">
+    <div class="hz-track" id="hzTrack">
+      <article class="season green">
+        <div class="season-copy"><h3>Эликсир концентрат</h3><span class="season-pack">Бутылка - 330мл</span><div class="rate">60%</div><span class="rate-label">фруктовой части</span>
+          <table class="season-table" aria-label="Параметры эликсира"><tr><td>Цена для HoReCa</td><td>1500 руб/ бут</td></tr><tr><td>Разведение</td><td>1:6</td></tr><tr><td>Выход готовой основы.</td><td>До 6 л</td></tr><tr><td>Сырьевой вклад на продукт.</td><td>75 руб</td></tr><tr><td>Цена 1л готовой основы</td><td>250 руб</td></tr></table></div>
+        <div class="season-visual" aria-hidden="true"><img class="branch" src="assets/branch.png" alt=""><img class="b330-mandarin" src="exec-9a7b26ac-5cb9-414e-807a-c2ffa8f04597 1.png" alt=""><img class="b330-feijoa" src="exec-f865060a-e198-4609-b304-bfc784f16b3b 2.png" alt=""><img class="b330-granat" src="exec-37fad77a-068f-4041-8927-de6cc2b971c7 1.png" alt=""></div>
+      </article>
+      <article class="season orange">
+        <div class="season-copy"><h3>Сироп/кордиал</h3><span class="season-pack">Бутылка - 950мл</span>
+          <table class="season-table" aria-label="Параметры сиропа"><tr><td>Цена для HoReCa</td><td>1500 руб/ бут</td></tr><tr><td>Разведение</td><td>1:6</td></tr><tr><td>Выход готовой основы.</td><td>До 6 л</td></tr><tr><td>Сырьевой вклад на продукт.</td><td>75 руб</td></tr><tr><td>Цена 1л готовой основы</td><td>250 руб</td></tr></table></div>
+        <div class="season-visual" aria-hidden="true"><img class="fruit-top" src="assets/mandarin-halves.png" alt=""><img class="leaf-side" src="assets/leaf.png" alt=""><img class="b850" src="assets/bottle-mandarin.png" alt=""><img class="b-feijoa" src="assets/bottle-feijoa.png" alt=""><img class="b-granat" src="assets/bottle-granat.png" alt=""></div>
+      </article>
+      <article class="season red">
+        <div class="season-copy"><h3>Фруктовое пюре</h3><span class="season-pack">Ведро - 5000 г</span>
+          <table class="season-table" aria-label="Параметры фруктового пюре"><tr><td>Цена для HoReCa</td><td>1500 руб/ бут</td></tr><tr><td>Разведение</td><td>1:6</td></tr><tr><td>Выход готовой основы.</td><td>До 6 л</td></tr><tr><td>Сырьевой вклад на продукт.</td><td>75 руб</td></tr><tr><td>Цена 1л готовой основы</td><td>250 руб</td></tr></table></div>
+        <div class="season-visual" aria-hidden="true"><img class="seeds" src="assets/granat-seeds.png" alt=""><img class="leaf-side" src="assets/leaf.png" alt=""><img class="bucket" src="exec-f6f6af9d-344b-4220-bc92-e8a632de101f.png" alt=""></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RECIPES SHOWCASE ============ -->
+<section class="sec recipes-showcase" id="recipes-showcase">
+  <div class="recipes-intro">
+    <div>
+      <div class="recipes-kicker">02 — Для меню</div>
+      <h2 class="recipes-title fx" data-fx="rise">Один эликсир.<em>6 сценариев.</em></h2>
+    </div>
+    <p class="recipes-lead">Холодные и горячие напитки, шоты, коктейли, кондитерка и кухня. Меню собирается за 30 секунд — без сиропов, пюре и лишней подготовки.</p>
+  </div>
+  <div class="recipes-body">
+    <div class="recipes-art" data-reveal>
+      <img class="glass" src="assets/smoothie.png" alt="Мандариновый напиток">
+      <img class="leaf-a" src="assets/leaf.png" alt="">
+      <img class="fruit-a" src="assets/mandarin-halves.png" alt="">
+    </div>
+    <div class="recipes-catalog" data-reveal>
+      <div class="recipes-catalog-head"><span>Куда добавить эликсир</span><span>37 рецептов</span></div>
+      <button class="recipe-row" type="button" data-recipes data-recipe-cat="cold"><span class="n">01</span><strong>Холодные напитки</strong><p>Лимонады, тоники и бамбл-кофе — яркий фруктовый вкус без свежевыжатого сока.</p><span class="arrow">→</span></button>
+      <button class="recipe-row" type="button" data-recipes data-recipe-cat="hot"><span class="n">02</span><strong>Горячие напитки</strong><p>Чаи, глинтвейны, пунши и пряные согревающие смеси со специями.</p><span class="arrow">→</span></button>
+      <button class="recipe-row" type="button" data-recipes data-recipe-cat="shots"><span class="n">03</span><strong>Шоты</strong><p>Короткие порционные напитки на основе мандарина, фейхоа и граната.</p><span class="arrow">→</span></button>
+      <button class="recipe-row" type="button" data-recipes data-recipe-cat="cocktails"><span class="n">04</span><strong>Коктейли</strong><p>Холодные коктейли с джином, ромом, водкой, игристым и пивом.</p><span class="arrow">→</span></button>
+      <button class="recipe-row" type="button" data-recipes data-recipe-cat="pastry"><span class="n">05</span><strong>Кондитерка</strong><p>Топинги, кремы, соусы и десертные заготовки.</p><span class="arrow">→</span></button>
+      <button class="recipe-row" type="button" data-recipes data-recipe-cat="kitchen"><span class="n">06</span><strong>Кухня</strong><p>Заправки, маринады и глазури для салатов, рыбы, птицы, мяса и овощей.</p><span class="arrow">→</span></button>
+      <div class="recipes-foot"><span>Каждый рецепт рассчитан на порцию или готовую заготовку с точной граммовкой.</span><button class="recipes-all" type="button" data-recipes data-recipe-cat="all">Вся библиотека →</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ USES / HORECA ============ -->
+<section class="sec" id="uses">
+  <div class="sec-head center">
+    <div class="eyebrow">Для кофеен, ресторанов, спортклубов и гостиниц</div>
+    <h2 class="h2 fx" data-fx="rise">Фруктовое меню <em>без</em> разработки с нуля</h2>
+    <p class="lead">Один продукт — несколько сценариев применения в HoReCa-меню.</p>
+  </div>
+  <div class="uses">
+    <div class="uses-video">
+      <video autoplay muted loop playsinline preload="metadata" aria-label="Трансформация продукта">
+        <source src="assets/horeca-morph.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div>
+      <h3 class="h2 fx" data-fx="flip" style="font-size:clamp(34px,3.4vw,56px)">Почему выбирают <em>нас</em></h3>
+      <ul class="checks">
+        <li data-reveal><i>1</i><span>Помогает быстро запустить новые напитки — сезонные и постоянные.</span></li>
+        <li data-reveal><i>2</i><span>Даёт одинаковый вкус во всех точках сети.</span></li>
+        <li data-reveal><i>3</i><span>Снижает зависимость от свежих фруктов и пюре.</span></li>
+        <li data-reveal><i>4</i><span>Упрощает работу персонала на точке: кофейня, ресторан, спортклуб, гостиница.</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="stat"><strong><span data-count="60">0</span><sup>%</sup></strong><span>фруктовой части в эликсире</span></div>
+    <div class="stat"><strong><span data-count="5">0</span><sup>кг</sup></strong><span>мандаринов в бутылке 330 г</span></div>
+    <div class="stat"><strong><span data-count="850">0</span><sup>г</sup></strong><span>фасовка для HoReCa, также 330 г</span></div>
+    <div class="stat"><strong><span data-count="12">0</span><sup>мес</sup></strong><span>срок хранения</span></div>
+  </div>
+</section>
+
+<!-- ============ FILLINGS ============ -->
+<section class="sec" id="fillings">
+  <div class="fill">
+    <div class="fill-copy">
+      <div class="eyebrow">Для кондитерских</div>
+      <h2 class="h2 fx" data-fx="skew"><span class="fill-first">Начинки <em>из</em></span><br>фруктов</h2>
+      <p class="lead">Аджарский мандарин, гурийский фейхоа и горный гранат — в фасовке для кондитерских цехов.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="sec" id="contact">
+  <div class="cta">
+    <div>
+      <div class="eyebrow">Как купить</div>
+      <h2 class="h2 fx" data-fx="blur">Уникальное коммерческое <em>предложение.</em></h2>
+      <p class="lead">Подберём линейку эликсиров и начинок для вашего формата, рассчитаем расход и подготовим предложение.</p>
+    </div>
+    <div class="offer-scope">
+      <h3>Подходит для:</h3>
+      <ul class="offer-list"><li>HoReCa</li><li>Кофеен и баров</li><li>Розничной торговли</li><li>Кондитерских</li><li>Фабрик и производств</li></ul>
+      <div class="contact-actions" aria-label="Связаться с QUEETELI">
+        <a class="buy" href="#" data-mode="buy"><span class="ico">₽</span>Купить</a>
+        <a class="taste" href="#" data-mode="taste"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M7 3h10l-1 7a4 4 0 0 1-8 0L7 3Z"/><path d="M12 14v6M8 21h8"/></svg></span>Дегустация</a>
+      </div>
+      <p class="offer-note">Дистрибьютер по Самарской области.</p>
+    </div>
+  </div>
+  <footer class="footer">
+    <div><img src="assets/logo.png" alt="QUEETELI">Authentic product of Georgia<br>© 2026 QUEETELI</div>
+    <nav>
+      <a href="#" data-goto="trio">Продукты</a><a href="#" data-goto="#fillings">Начинки</a><a href="#" data-recipes>Рецепты</a>
+      <a href="#" data-goto="#uses">Условия работы</a><a href="#" data-goto="#contact">Контакты</a>
+    </nav>
+    <div>queeteli.com</div>
+  </footer>
+</section>
+</main>
+
+<!-- ============ BUY / TASTING MODAL ============ -->
+<div class="lead-modal" id="leadModal" aria-hidden="true">
+  <div class="lead-backdrop" data-lead-close></div>
+  <section class="lead-dialog" role="dialog" aria-modal="true" aria-labelledby="leadTitle">
+    <button class="lead-close" type="button" data-lead-close aria-label="Закрыть">×</button>
+    <div class="lead-kicker">QUEETELI · HORECA</div>
+    <h2 class="lead-title" id="leadTitle">Записаться на дегустацию</h2>
+    <p class="lead-copy" id="leadCopy">Привезём три вкуса и покажем 5–6 рецептов для вашего меню.</p>
+    <form class="lead-form" id="leadForm">
+      <label>Имя<input name="name" autocomplete="name" placeholder="Как к вам обращаться" required></label>
+      <label>Телефон<input name="phone" type="tel" autocomplete="tel" placeholder="+7 900 000-00-00" required></label>
+      <label>Заведение<input name="company" autocomplete="organization" placeholder="Кофейня, ресторан, кондитерская"></label>
+      <label>Что интересно
+        <select name="interest" id="leadInterest">
+          <option value="taste">Дегустация линейки</option>
+          <option value="buy">Покупка для HoReCa</option>
+          <option value="fillings">Начинки 5 кг</option>
+          <option value="partner">Сотрудничество / дистрибуция</option>
+        </select>
+      </label>
+      <button class="lead-submit" type="submit">Отправить заявку</button>
+      <small class="lead-privacy">Нажимая кнопку, вы соглашаетесь на обработку контактных данных.</small>
+    </form>
+    <div class="lead-success" id="leadSuccess">
+      <h3>Спасибо!</h3>
+      <p>Заявка принята. Мы свяжемся с вами в течение дня.</p>
+    </div>
+  </section>
+</div>
+
+<!-- ============ RECIPES OVERLAY ============ -->
+<div class="rc" id="rc" aria-hidden="true">
+  <div class="rc-bg" id="rcBg"></div>
+  <div class="rc-glow" id="rcGlow"></div>
+  <button class="rc-close" id="rcClose" aria-label="Закрыть">×</button>
+  <div class="rc-main">
+    <div class="rc-left">
+      <div class="rc-head">
+        <div><img src="assets/logo.png" alt="QUEETELI"><h2 class="rc-title">Рецепты <em id="rcFlavorWord">с мандарином</em></h2></div>
+        <div class="rc-count" id="rcCount"></div>
+      </div>
+      <div class="rc-scroll" data-lenis-prevent><div class="rc-grid" id="rcGrid"></div></div>
+      <nav class="rc-tabs" id="rcTabs">
+        <button data-cat="all" class="on">Все</button>
+        <button data-cat="cold">Холодные</button>
+        <button data-cat="hot">Горячие</button>
+        <button data-cat="shots">Шоты</button>
+        <button data-cat="cocktails">Коктейли</button>
+        <button data-cat="pastry">Кондитерка</button>
+        <button data-cat="kitchen">Кухня</button>
+      </nav>
+    </div>
+    <aside class="rc-side">
+      <div class="rc-slot" id="rcSlot">
+        <img id="rcBottle" src="assets/bottle-mandarin.png" alt="">
+        <div class="rc-all-bottles" id="rcAllBottles" aria-hidden="true">
+          <img src="assets/bottle-feijoa.png" alt="">
+          <img src="assets/bottle-mandarin.png" alt="">
+          <img src="assets/bottle-granat.png" alt="">
+        </div>
+      </div>
+      <div>
+        <div class="rc-fname" id="rcFname">Аджарский мандарин</div>
+        <div class="rc-flavors" id="rcFlavors">
+          <button class="all-flavors" data-flavor="all" aria-label="Все вкусы">Все</button>
+          <button data-flavor="mandarin" aria-label="Мандарин"><img src="assets/bottle-mandarin.png" alt=""></button>
+          <button data-flavor="feijoa" aria-label="Фейхоа"><img src="assets/bottle-feijoa.png" alt=""></button>
+          <button data-flavor="granat" aria-label="Гранат"><img src="assets/bottle-granat.png" alt=""></button>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>
+(() => {
+gsap.registerPlugin(ScrollTrigger, Flip);
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+window.scrollTo(0, 0);
+
+const $ = (s, c = document) => c.querySelector(s);
+const $$ = (s, c = document) => [...c.querySelectorAll(s)];
+const vw = () => innerWidth / 100, vh = () => innerHeight / 100;
+const mq = matchMedia('(max-width: 760px)');
+const isMob = () => mq.matches;
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- smooth scroll ---------- */
+const lenis = new Lenis({ lerp: 0.085, wheelMultiplier: 0.9 });
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add(t => lenis.raf(t * 1000));
+gsap.ticker.lagSmoothing(0);
+lenis.stop();
+
+/* ---------- text splitting + typography fx ---------- */
+function split(el) {
+  if (el._chars) return el._chars;
+  const chars = [];
+  const walk = node => {
+    [...node.childNodes].forEach(n => {
+      if (n.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        n.textContent.split(/(\s+)/).forEach(part => {
+          if (!part) return;
+          if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(' ')); return; }
+          const w = document.createElement('span'); w.className = 'word';
+          [...part].forEach(c => { const s = document.createElement('span'); s.className = 'char'; s.textContent = c; w.appendChild(s); chars.push(s); });
+          frag.appendChild(w);
+        });
+        n.replaceWith(frag);
+      } else if (n.nodeType === 1 && n.tagName !== 'BR' && n.tagName !== 'SMALL') walk(n);
+    });
+  };
+  walk(el);
+  el._chars = chars;
+  return chars;
+}
+const R = gsap.utils.random;
+const FX = {
+  rise:    { from: { opacity: 0, yPercent: 110, rotateX: -90, transformOrigin: '50% 0%' }, to: { opacity: 1, yPercent: 0, rotateX: 0 }, stagger: 0.002 },
+  blur:    { from: { opacity: 0, scale: 1.8, filter: 'blur(14px)', y: () => R(-50, 50) }, to: { opacity: 1, scale: 1, filter: 'blur(0px)', y: 0 }, stagger: { each: 0.002, from: 'random' } },
+  scatter: { from: { opacity: 0, x: () => R(-260, 260), y: () => R(-160, 160), rotate: () => R(-120, 120), scale: 0.3 }, to: { opacity: 1, x: 0, y: 0, rotate: 0, scale: 1 }, stagger: { each: 0.0015, from: 'random' } },
+  spread:  { from: { opacity: 0, scaleY: 3, yPercent: 60, transformOrigin: '50% 100%' }, to: { opacity: 1, scaleY: 1, yPercent: 0 }, stagger: { each: 0.0025, from: 'center' } },
+  flip:    { from: { opacity: 0, rotateY: -100, transformOrigin: '0% 50%' }, to: { opacity: 1, rotateY: 0 }, stagger: 0.002 },
+  skew:    { from: { opacity: 0, yPercent: 90, skewX: -40, scaleX: 1.5 }, to: { opacity: 1, yPercent: 0, skewX: 0, scaleX: 1 }, stagger: { each: 0.0018, from: 'end' } },
+};
+function fxFrom(el, type, extra = {}) {
+  const f = FX[type];
+  return [split(el), f.from, { ...f.to, stagger: f.stagger, ...extra }];
+}
+
+/* ---------- loader ---------- */
+const loaderImgs = $$('img').filter(i => !i.closest('#rc'));
+let loaded = 0;
+const bar = $('.loader-bar i'), num = $('.loader-num');
+const prog = { v: 0 };
+function tick() {
+  const p = loaded / total;
+  gsap.to(prog, { v: p, duration: 0.4, onUpdate: () => { bar.style.width = prog.v * 100 + '%'; num.textContent = Math.round(prog.v * 100) + '%'; } });
+}
+let started = false;
+function done() { if (started) return; started = true; gsap.delayedCall(0.15, intro); }
+const total = loaderImgs.length + 1;
+const ok = () => { loaded++; tick(); if (loaded >= total) done(); };
+// видео грузим целиком в blob — так перемотка по скроллу работает без range-запросов
+const vid = $('#stageVideo');
+fetch('assets/fall.mp4').then(r => r.blob()).then(b => { vid.src = URL.createObjectURL(b); }).catch(() => { vid.src = 'assets/fall.mp4'; }).finally(ok);
+loaderImgs.forEach(img => {
+  if (img.complete) ok(); else { img.addEventListener('load', ok, { once: true }); img.addEventListener('error', ok, { once: true }); }
+});
+setTimeout(done, 9000);
+
+/* ---------- foreground fruit (depth layer over the video) ---------- */
+const rainSrc = ['mandarin', 'mandarin-slice', 'orange', 'mandarin-halves', 'mandarin', 'mandarin-slice', 'orange'];
+const rainEl = $('#rain');
+const seed = (i, k) => { const x = Math.sin(i * 91.7 + k * 13.3) * 43758.5453; return x - Math.floor(x); };
+const rain = rainSrc.map((s, i) => {
+  const img = new Image(); img.src = `assets/${s}.png`; img.alt = '';
+  const near = i % 2 === 0;                                  // ближний план — крупнее и размытее
+  img.style.width = (near ? 15 : 8) + seed(i, 1) * 6 + 'vw';
+  if (near) img.style.filter = 'blur(5px) drop-shadow(0 20px 20px rgba(160,60,0,.2))';
+  rainEl.appendChild(img);
+  const side = i % 2 ? 1 : -1;
+  return { img, sx: side * (22 + seed(i, 2) * 26), sy: -75 - seed(i, 3) * 40, r0: (seed(i, 5) - 0.5) * 120, r1: (near ? 260 : 160) + seed(i, 6) * 160, speed: near ? 0.75 : 1.05 };
+});
+gsap.set(rain.map(r => r.img), { xPercent: -50, yPercent: -50 });
+
+/* ---------- stage geometry ---------- */
+const bottles = {}; $$('.bottle').forEach(b => bottles[b.dataset.flavor] = b);
+const caps = $$('.cap'), advs = $$('.adv');
+const seasonsPanel = $('#seasons'), seasonsTrack = $('#hzTrack'), seasonHeads = $$('.season h3');
+const seasonsEnterAt = 8.75, seasonsEnterDuration = 1.1;
+const trioDissolveAt = seasonsEnterAt + seasonsEnterDuration * 0.65;
+const off = () => isMob() ? innerWidth * 0.31 : Math.min(innerWidth * 0.29, 440);
+// геометрия бутылки в последнем кадре видео и в PNG (доли кадра) — чтобы подмена была бесшовной
+const VID = { w: 1076, h: 1924, top: 0.0094, bottom: 0.895, cx: 0.5437 };
+const PNG = { top: 0.0111, bottom: 0.9741 };
+function layout() {
+  const stage = $('#stageIn'), W = stage.offsetWidth, H = stage.offsetHeight;
+  caps.forEach(c => c.style.left = (W / 2 + (+c.dataset.k) * off()) + 'px');
+  const bh = bottles.mandarin.offsetHeight;
+  const hv = bh * (PNG.bottom - PNG.top) / (VID.bottom - VID.top), wv = hv * VID.w / VID.h;
+  Object.assign(vid.style, {
+    height: hv + 'px', width: wv + 'px',
+    top: (H * 0.54 - bh / 2 + bh * PNG.top - hv * VID.top) + 'px',
+    left: (W / 2 - wv * VID.cx) + 'px',
+  });
+}
+layout();
+ScrollTrigger.addEventListener('refreshInit', layout);
+gsap.set($$('.bottle'), { xPercent: -50, yPercent: -50, x: 0, y: 0 });
+gsap.set([bottles.feijoa, bottles.granat], { opacity: 0, scale: 0.9 });
+gsap.set($$('.bottle .b-img'), { clipPath: 'inset(0% 0% 0% 0%)' });
+gsap.set(seasonsPanel, { autoAlpha: 0 });
+gsap.set(seasonHeads, { opacity: 0 });
+['#advTitle', '#trioTitle'].forEach(s => gsap.set([...split($(s)), $(s + ' small')], { opacity: 0 }));
+
+/* ---------- master pinned timeline ---------- */
+const tl = gsap.timeline({ defaults: { ease: 'none' } });
+const branch = $('#branch'), mand = $('#mandarin');
+const heroOut = [$('#heroLeft'), $('#heroRight'), $('#scrollHint')];
+
+// 1. мандарин отрывается и падает
+tl.addLabel('hero', 0)
+  .to('.hero-decor', { opacity: 0, duration: 0.5, stagger: { each: 0.0025, from: 'edges' }, ease: 'power2.out' }, 0.08)
+  .to(mand, { rotation: -16, duration: 0.25, ease: 'sine.inOut' }, 0)
+  .to(mand, { y: () => innerHeight * 1.25, rotation: 210, duration: 1, ease: 'power2.in' }, 0.25)
+  .to(mand, { opacity: 0, duration: 0.05 }, 1.2)
+  .to(branch, { rotation: -3.5, duration: 0.18, ease: 'power2.out' }, 0.25)
+  .to(branch, { rotation: 2, duration: 0.25, ease: 'sine.inOut' }, 0.43)
+  .to(branch, { rotation: 0, duration: 0.3, ease: 'sine.inOut' }, 0.68)
+  .to($('#heroLeft'), { y: -90, opacity: 0, duration: 0.7 }, 0.35)
+  .to($('#heroRight'), { y: 60, opacity: 0, duration: 0.6 }, 0.35)
+  .to($('#scrollHint'), { opacity: 0, duration: 0.3 }, 0.05)
+  .to(split($('#bgWord')), { yPercent: -60, opacity: 0, filter: 'blur(10px)', stagger: { each: 0.005, from: 'center' }, duration: 0.6 }, 0.6)
+  .to('.top-logo', { opacity: 1, duration: 0.4 }, 0.8)
+  .to(branch, { y: () => -innerHeight * 1.6, duration: 1.1, ease: 'power2.in' }, 1.0);
+
+// 2. видео: мандарины падают и превращаются в бутылку (кадр привязан к скроллу)
+tl.addLabel('fall', 1.25);
+const vState = { t: 0 };
+let pendingSeek = null;
+function seekVideo(t) {
+  if (!vid.duration) return;
+  t = Math.min(t, vid.duration - 0.04);
+  if (vid.seeking) { pendingSeek = t; return; }
+  vid.currentTime = t;
+}
+vid.addEventListener('seeked', () => { if (pendingSeek !== null) { const t = pendingSeek; pendingSeek = null; vid.currentTime = t; } });
+tl.to(vid, { opacity: 1, duration: 0.3 }, 1.15)
+  .to(vState, { t: 5.3, duration: 2.3, ease: 'none', onUpdate: () => seekVideo(vState.t) }, 1.2)
+  .fromTo(vid, { '--m': '18%' }, { '--m': '0%', duration: 0.5 }, 1.9)
+  .to('.blob', { opacity: 0.25, duration: 0.8 }, 1.6);
+rain.forEach((r, i) => {
+  const t = 1.3 + i * 0.22;
+  tl.fromTo(r.img,
+    { x: () => r.sx * vw(), y: () => r.sy * vh(), rotation: r.r0 },
+    { x: () => r.sx * vw() * 1.15, y: () => 90 * vh(), rotation: r.r0 + r.r1, duration: r.speed, ease: 'none' }, t);
+});
+const bm = bottles.mandarin;
+gsap.set(bm, { opacity: 0 });
+tl.to(bm, { opacity: 1, duration: 0.25 }, 3.45)
+  .to(vid, { opacity: 0, duration: 0.2 }, 3.65)
+  .fromTo('#flash', { scale: 0.2, opacity: 0 }, { scale: 2.4, opacity: 0.8, duration: 0.3, ease: 'power2.out' }, 3.5)
+  .to('#flash', { opacity: 0, duration: 0.4 }, 3.8)
+  .to(bm.querySelector('.b-glow'), { opacity: 1, duration: 0.6 }, 3.5)
+  .to([bm.querySelector('.b-shadow'), bm.querySelector('.b-reflect')], { opacity: 1, duration: 0.5 }, 3.55)
+  .to('#spot', { opacity: 1, duration: 0.6 }, 3.5);
+
+// 3. преимущества вокруг бутылки
+tl.fromTo(...fxFrom($('#advTitle'), 'rise', { duration: 0.45 }), 3.7)
+  .fromTo('#advTitle small', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.25 }, 3.7);
+advs.forEach((a, i) => {
+  const pick = () => (isMob() ? a.dataset.m : a.dataset.d).split(',').map(Number);
+  tl.fromTo(a, { x: 0, y: 0, scale: 0.4, opacity: 0 },
+    { x: () => pick()[0] * vw(), y: () => pick()[1] * vh(), scale: 1, opacity: () => pick()[0] < -90 ? 0 : 1, duration: 0.7, ease: 'power3.out' }, 3.9 + i * 0.12);
+});
+tl.addLabel('bottle', 5.0);
+
+// 4. бутылка делится на три
+tl.to(advs, { scale: 0.7, opacity: 0, filter: 'blur(8px)', duration: 0.5, stagger: 0.004 }, 5.7)
+  .to('#advTitle small', { opacity: 0, duration: 0.3 }, 5.7)
+  .to(split($('#advTitle')), { opacity: 0, yPercent: -60, stagger: { each: 0.002, from: 'center' }, duration: 0.4 }, 5.7)
+  .to('#spot', { opacity: 0.4, duration: 0.5 }, 6.1)
+  .to([bottles.feijoa, bottles.granat], { opacity: 1, duration: 0.25 }, 6.3)
+  .to($$('.bottle'), { scale: () => isMob() ? 0.56 : 0.64, y: () => -3 * vh(), duration: 1.1, ease: 'power3.inOut' }, 6.3)
+  .to(bottles.feijoa, { x: () => -off(), rotation: -4, duration: 1.1, ease: 'power3.inOut' }, 6.3)
+  .to(bottles.granat, { x: () => off(), rotation: 4, duration: 1.1, ease: 'power3.inOut' }, 6.3)
+  .to([bottles.feijoa, bottles.granat], { rotation: 0, duration: 0.5, ease: 'sine.out' }, 7.4)
+  .to($$('.bottle .b-glow, .bottle .b-shadow, .bottle .b-reflect'), { opacity: 1, duration: 0.6 }, 6.8)
+  .fromTo($$('.bottle .b-fruit'), { opacity: 0, scale: 0.5, y: 60, rotation: -20 }, { opacity: 1, scale: 1, y: 0, rotation: 0, duration: 0.8, stagger: 0.01, ease: 'back.out(1.6)' }, 7.0)
+  .fromTo($$('.trio-hint'), { opacity: 0, y: 44 }, { opacity: 1, y: 0, duration: 0.48, stagger: 0.04, ease: 'power3.out' }, 7.2)
+  .fromTo(...fxFrom($('#trioTitle'), 'spread', { duration: 0.45 }), 7.1)
+  .fromTo('#trioTitle small', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.25 }, 7.1)
+  .fromTo(caps, { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, stagger: 0.006, ease: 'power3.out' }, 7.3)
+  .addLabel('trio', 8.1)
+  .to({}, { duration: 0.65 }, 8.1)
+  .set(seasonsPanel, { autoAlpha: 1 }, seasonsEnterAt)
+  .fromTo(seasonsTrack, { x: () => innerWidth }, { x: 0, duration: seasonsEnterDuration, ease: 'power3.inOut' }, seasonsEnterAt)
+  // Когда карточки закрыли 65% входа, растворяем предыдущую сцену под ними.
+  .to('#stageIn', { autoAlpha: 0, duration: 0.3, ease: 'power1.out' }, trioDissolveAt)
+  .to(seasonHeads, { opacity: 1, duration: 0.35, stagger: 0.06, ease: 'power1.out' }, 9.2)
+  .to(seasonsTrack, { x: () => -(seasonsTrack.scrollWidth - innerWidth), duration: 4.3, ease: 'none' }, 9.85)
+  .addLabel('seasons', seasonsEnterAt);
+
+// Длина скролл-сцены включает переход от трёх вкусов к горизонтальному ряду форматов.
+const STAGE_SCROLL_SPEED = 3;
+const stageST = ScrollTrigger.create({
+  trigger: '#stage', start: 'top top', end: () => '+=' + innerHeight * (tl.duration() / STAGE_SCROLL_SPEED),
+  pin: true, scrub: 1, animation: tl, invalidateOnRefresh: true, anticipatePin: 1,
+  onEnter: () => seasonsPanel.classList.remove('seasons-released'),
+  onEnterBack: () => seasonsPanel.classList.remove('seasons-released'),
+  onLeave: () => seasonsPanel.classList.add('seasons-released'),
+  onLeaveBack: () => seasonsPanel.classList.remove('seasons-released'),
+  onUpdate: () => $('#stageIn').classList.toggle('trio-on', tl.time() >= tl.labels.trio && tl.time() < tl.labels.seasons),
+});
+function labelScroll(name) {
+  return stageST.start + (tl.labels[name] / tl.duration()) * (stageST.end - stageST.start);
+}
+
+/* idle float for advantage cards */
+$$('.adv-in').forEach((a, i) => gsap.to(a, { y: i % 2 ? 10 : -10, duration: 2.4 + i * 0.3, repeat: -1, yoyo: true, ease: 'sine.inOut' }));
+
+/* ---------- mouse parallax ---------- */
+if (!reduce && matchMedia('(pointer:fine)').matches) {
+  const movers = $$('[data-mouse]').map(el => ({ el, d: +el.dataset.mouse, x: gsap.quickTo(el, 'x', { duration: 1.2, ease: 'power3' }), y: gsap.quickTo(el, 'y', { duration: 1.2, ease: 'power3' }) }));
+  addEventListener('pointermove', e => {
+    const nx = e.clientX / innerWidth - 0.5, ny = e.clientY / innerHeight - 0.5;
+    movers.forEach(m => { m.x(nx * m.d * 2); m.y(ny * m.d * 2); });
+  });
+}
+
+/* ---------- intro ---------- */
+function intro() {
+  const t = gsap.timeline({ defaults: { ease: 'expo.out' }, onComplete: () => lenis.start() });
+  t.to('#loader', { yPercent: -100, duration: 0.75, ease: 'expo.inOut' })
+   .set('#loader', { display: 'none' })
+   .fromTo(...fxFrom($('#bgWord'), 'blur', { duration: 0.8 }), 0.15)
+   .from(branch, { yPercent: -60, rotation: 6, duration: 2, ease: 'elastic.out(1,0.55)' }, 0.55)
+   .from(mand, { scale: 0, duration: 1.2, ease: 'back.out(2)' }, 1.3)
+   .from('.top-logo', { y: -18, opacity: 0, duration: 0.5 }, 0.2)
+   .fromTo(...fxFrom($('#heroTitle'), 'rise', { duration: 0.62, stagger: 0.0016, ease: 'expo.out' }), 0.28)
+   .fromTo(...fxFrom($('#heroSub'), 'flip', { duration: 0.5, stagger: 0.001, ease: 'expo.out' }), 0.52)
+   .from('#heroRight', { y: 24, opacity: 0, duration: 0.58 }, 0.58)
+   .from('#dock', { y: 120, duration: 1.2 }, 1.6)
+   .from('.top-actions, .sidenav', { opacity: 0, x: 30, duration: 0.55 }, 0.48)
+   .from('#scrollHint', { opacity: 0, duration: 0.45 }, 0.7);
+}
+
+/* ---------- scroll-driven heading fx ---------- */
+$$('.sec .fx[data-fx], #seasons .fx[data-fx]').forEach(el => {
+  const inHz = el.closest('#seasons');
+  if (inHz) return; // handled with horizontal section
+  gsap.fromTo(...fxFrom(el, el.dataset.fx, { ease: 'none', scrollTrigger: { trigger: el, start: 'top 92%', end: 'top 68%', scrub: 0.65 } }));
+});
+$$('[data-reveal]').forEach(el => {
+  if (el.classList.contains('recipes-art') || el.matches('.checks li')) return;
+  gsap.from(el, { y: 55, opacity: 0, duration: 0.6, ease: 'expo.out', scrollTrigger: { trigger: el, start: 'top 90%' } });
+});
+gsap.from('.checks li', {
+  y: 34, autoAlpha: 0, duration: 0.56, stagger: 0.12, ease: 'power3.out',
+  scrollTrigger: { trigger: '#uses', start: 'top 72%' }
+});
+const recipesGlass = $('.recipes-art .glass');
+const recipesFruit = $('.recipes-art .fruit-a');
+const recipesLeaf = $('.recipes-art .leaf-a');
+if (recipesGlass && recipesFruit && recipesLeaf) {
+  gsap.set([recipesGlass, recipesFruit, recipesLeaf], { willChange: 'transform,opacity' });
+  const recipesArtTimeline = gsap.timeline({
+    scrollTrigger: { trigger: '.recipes-body', start: 'top 92%', end: 'top 38%', scrub: 0.65, invalidateOnRefresh: true }
+  });
+  recipesArtTimeline
+    .fromTo(recipesGlass, { yPercent: 70, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 0.72, ease: 'none' }, 0)
+    .fromTo(recipesFruit, { x: 70, y: 36, scale: 0.68, rotation: -18, autoAlpha: 0 }, { x: 0, y: 0, scale: 1, rotation: -7, autoAlpha: 1, duration: 0.14, ease: 'power2.out' }, 0.72)
+    .fromTo(recipesLeaf, { y: -220, rotation: -35, autoAlpha: 0 }, { y: 0, rotation: -14, autoAlpha: 1, duration: 0.14, ease: 'power2.out' }, 0.79);
+}
+$$('[data-speed]').forEach(el => {
+  const s = +el.dataset.speed;
+  gsap.fromTo(el, { y: () => (s - 1) * 260 }, { y: () => -(s - 1) * 260, ease: 'none', scrollTrigger: { trigger: el.closest('section'), start: 'top bottom', end: 'bottom top', scrub: true, invalidateOnRefresh: true } });
+});
+
+/* counters */
+$$('[data-count]').forEach(el => {
+  const o = { v: 0 };
+  gsap.to(o, { v: +el.dataset.count, duration: 2, ease: 'expo.out', scrollTrigger: { trigger: el, start: 'top 90%' }, onUpdate: () => el.textContent = Math.round(o.v) });
+});
+
+/* ---------- navigation ---------- */
+function goto(target) {
+  closeMenu();
+  if (['hero', 'bottle', 'trio'].includes(target)) lenis.scrollTo(labelScroll(target), { duration: 1.8 });
+  else if (target === '#seasons') lenis.scrollTo(labelScroll('seasons'), { duration: 1.8 });
+  else {
+    const el = $(target);
+    if (!el) return;
+    const st = ScrollTrigger.getAll().find(s => s.trigger === el && s.pin);
+    lenis.scrollTo(st ? st.start : el, { duration: 1.8 });
+  }
+}
+document.addEventListener('click', e => {
+  const r = e.target.closest('[data-recipes]');
+  if (r) { e.preventDefault(); closeMenu(); openRecipes(r.dataset.recipes || null, r.dataset.recipeCat || null); return; }
+  const lead = e.target.closest('[data-mode]');
+  if (lead) { e.preventDefault(); openLeadModal(lead.dataset.mode); return; }
+  const g = e.target.closest('[data-goto]');
+  if (g) {
+    e.preventDefault();
+    goto(g.dataset.goto);
+  }
+  const b = e.target.closest('.trio-on .bottle');
+  if (b) openRecipes(b.dataset.flavor);
+});
+const navLinks = $$('#sidenav a');
+function updateNav() {
+  const y = lenis.scroll + innerHeight * 0.4;
+  let active = 0;
+  navLinks.forEach((a, i) => {
+    const g = a.dataset.goto;
+    let pos;
+    if (['hero', 'bottle', 'trio'].includes(g)) pos = labelScroll(g) - (g === 'hero' ? 0 : innerHeight * 0.8);
+    else if (g === '#seasons') pos = labelScroll('seasons') - innerHeight * 0.8;
+    else pos = $(g).getBoundingClientRect().top + lenis.scroll;
+    if (y >= pos) active = i;
+  });
+  navLinks.forEach((a, i) => a.classList.toggle('active', i === active));
+}
+lenis.on('scroll', updateNav);
+updateNav();
+if (!isMob()) ScrollTrigger.create({
+  trigger: '#contact', start: 'top 88%', end: 'bottom top',
+  onToggle: self => $('#dock').classList.toggle('contact-hidden', self.isActive),
+});
+
+/* menu */
+const menu = $('#menu');
+let menuOpen = false;
+function openMenu() {
+  menuOpen = true; document.body.classList.add('menu-open'); lenis.stop();
+  gsap.timeline()
+    .set(menu, { visibility: 'visible' })
+    .to(menu, { clipPath: 'inset(0 0 0% 0)', duration: 0.7, ease: 'expo.inOut' })
+    .fromTo('.menu-links .t', { yPercent: 110, skewY: 8 }, { yPercent: 0, skewY: 0, duration: 0.5, stagger: 0.003, ease: 'expo.out' }, 0.24)
+    .fromTo('.menu-aside', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.5, ease: 'expo.out' }, 0.34);
+}
+function closeMenu() {
+  if (!menuOpen) return;
+  menuOpen = false; document.body.classList.remove('menu-open'); lenis.start();
+  gsap.to(menu, { clipPath: 'inset(0 0 100% 0)', duration: 0.7, ease: 'expo.inOut', onComplete: () => gsap.set(menu, { visibility: 'hidden' }) });
+}
+$('#burger').addEventListener('click', () => menuOpen ? closeMenu() : openMenu());
+
+/* buy / tasting modal */
+const leadModal = $('#leadModal');
+const leadForm = $('#leadForm');
+const leadSuccess = $('#leadSuccess');
+let leadOpen = false;
+function openLeadModal(mode = 'taste') {
+  leadOpen = true;
+  const taste = mode === 'taste';
+  $('#leadTitle').textContent = taste ? 'Записаться на дегустацию' : 'Оставить заявку на покупку';
+  $('#leadCopy').textContent = taste
+    ? 'Привезём три вкуса и покажем 5–6 рецептов для вашего меню.'
+    : 'Подберём формат и объём поставки, рассчитаем стоимость и ответим на вопросы.';
+  $('#leadInterest').value = taste ? 'taste' : 'buy';
+  leadForm.style.display = 'flex';
+  leadSuccess.style.display = 'none';
+  leadModal.classList.add('open');
+  leadModal.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('lead-open');
+  lenis.stop();
+  requestAnimationFrame(() => leadForm.elements.name.focus());
+}
+function closeLeadModal() {
+  if (!leadOpen) return;
+  leadOpen = false;
+  leadModal.classList.remove('open');
+  leadModal.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('lead-open');
+  lenis.start();
+}
+leadModal.addEventListener('click', e => { if (e.target.closest('[data-lead-close]')) closeLeadModal(); });
+leadForm.addEventListener('submit', e => {
+  e.preventDefault();
+  gsap.to(leadForm, { opacity: 0, y: -12, duration: 0.25, onComplete: () => {
+    leadForm.style.display = 'none';
+    gsap.set(leadForm, { opacity: 1, y: 0 });
+    leadSuccess.style.display = 'block';
+    gsap.fromTo(leadSuccess, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' });
+  }});
+});
+
+/* ---------- recipes ---------- */
+const FLAVORS = {
+  mandarin: { name: 'Аджарский мандарин', word: 'с мандарином', glow: 'rgba(255,170,90,.5)', c: 'var(--orange)' },
+  feijoa:   { name: 'Гурийский фейхоа', word: 'с фейхоа', glow: 'rgba(170,205,90,.5)', c: 'var(--feijoa)' },
+  granat:   { name: 'Горный гранат', word: 'с гранатом', glow: 'rgba(230,80,110,.42)', c: 'var(--granat)' },
+};
+const CAT = { cold: 'Холодные напитки', hot: 'Горячие напитки', shots: 'Шоты', cocktails: 'Коктейли', pastry: 'Кондитерка', kitchen: 'Кухня' };
+const RECIPES = [
+  /* --- Холодные напитки --- */
+  ['mandarin', 'cold', 'Аджарский мандарин лимонад', 'limonad', 'На графин 1 л', '100 г эликсира Аджарский мандарин · 50 г лимонного сока · 600 г несолёной газированной воды · 300 г льда кубиками', 'Влить эликсир и лимонный сок в графин. Добавить лёд и газированную воду, аккуратно перемешать.'],
+  ['mandarin', 'cold', 'Bumble coffee', 'bumble-coffee', '1 порция', '50 г эликсира Аджарский мандарин · 100 г воды · лёд · двойной эспрессо', 'Смешать эликсир с водой и вылить на лёд. Аккуратно добавить сверху двойной эспрессо.'],
+  ['feijoa', 'cold', 'Фейхоа тоник', 'shot-feyhoa', '1 порция', '30 г эликсира Гурийский фейхоа · 120 мл тоника · 10 мл сока лайма · лёд · огурец и мята для подачи', 'Наполнить бокал льдом, добавить эликсир и сок лайма. Долить тоник; украсить лентой огурца и мятой.'],
+  ['granat', 'cold', 'Гранатовый лимонад', 'granat-karkade', '1 порция', '50 г эликсира Горный гранат · 15 мл лимонного сока · 150 мл газированной воды · лёд · долька апельсина', 'Соединить эликсир и лимонный сок в бокале со льдом. Долить газированную воду, перемешать и добавить апельсин.'],
+  /* --- Горячие напитки --- */
+  ['mandarin', 'hot', 'Чай Аджарский мандарин', 'chay-mandarin', 'На чайник 600 г', '85 г эликсира Аджарский мандарин · 500 г кипятка · 30 г лимонного сока · травы или зелёный чай по желанию', 'Заварить выбранный чай или травы кипятком. Добавить эликсир и лимонный сок, перемешать и подать горячим.'],
+  ['mandarin', 'hot', 'Аджарский мандарин глинтвейн', 'chay-mandarin', '1 порция', '200 г белого вина · 35 г эликсира Аджарский мандарин · корица, бадьян, розмарин и кориандр по вкусу', 'Соединить вино, эликсир и специи. Прогревать около 20 минут до 70 °C, не доводя до кипения.'],
+  ['granat', 'hot', 'Гранатовый глинтвейн', 'granat-glintwein', '2–3 порции', '500 мл красного сухого вина · 80 г эликсира Горный гранат · 1/2 апельсина · 2 палочки корицы · 4 бутона гвоздики · 1 звёздочка бадьяна', 'Нарезать апельсин и соединить со всеми ингредиентами. Медленно прогреть до 70 °C, не кипятить; дать настояться 5 минут и процедить.'],
+  ['granat', 'hot', 'Гранатовый каркаде', 'granat-karkade', '2 порции', '50 мл эликсира Горный гранат · 8 г каркаде · 400 мл горячей воды · 2 дольки апельсина · 1 палочка корицы', 'Заварить каркаде с корицей горячей водой на 5–7 минут. Добавить эликсир и апельсин, перемешать.'],
+  ['feijoa', 'hot', 'Чай Фейхоа', 'chay-feyhoa', '1–2 порции', '50 г эликсира Гурийский фейхоа · 400 г зелёного чая · 2 дольки лайма · 2 веточки мяты', 'Заварить зелёный чай и немного остудить. Добавить эликсир, лайм и мяту; перемешать.'],
+  ['feijoa', 'hot', 'Фейхоа имбирный тодди', 'chay-feyhoa', '1 порция', '40 г эликсира Гурийский фейхоа · 180 мл горячей воды · 10 мл лимонного сока · 5 г мёда · 3 тонких ломтика имбиря · корица по вкусу', 'Залить имбирь горячей водой и настоять 4 минуты. Добавить эликсир, лимонный сок и мёд, перемешать; украсить корицей.'],
+  ['feijoa', 'hot', 'Фейхоа яблочный грог', 'granat-glintwein', '1 порция · алкогольный', '35 г эликсира Гурийский фейхоа · 120 мл сухого белого вина · 40 мл яблочного сока · 1 звёздочка бадьяна · 1 веточка тимьяна', 'Соединить все ингредиенты в сотейнике. Прогреть до 65–70 °C, не кипятить; дать настояться 3 минуты.'],
+  ['granat', 'hot', 'Гранатовый зимний пунш', 'granat-karkade', '2 порции', '50 г эликсира Горный гранат · 150 мл яблочного сока · 100 мл воды · 2 дольки апельсина · 1 палочка корицы · 2 бутона гвоздики', 'Соединить воду, сок, апельсин и специи и прогреть 7 минут. Снять с огня, добавить эликсир и перемешать.'],
+  ['granat', 'hot', 'Гранатовый ройбуш', 'granat-glintwein', '1 порция', '40 г эликсира Горный гранат · 200 мл ройбуша · полоска апельсиновой цедры · щепотка корицы', 'Заварить ройбуш и добавить апельсиновую цедру. Через 5 минут удалить цедру, добавить эликсир и корицу.'],
+  /* --- Шоты --- */
+  ['mandarin', 'shots', 'Шот Белое солнце', 'vodka-imbir', '1 порция', '15 г эликсира Аджарский мандарин · 40 г водки', 'Влить эликсир в шот. Аккуратно добавить водку вторым слоем; не перемешивать.'],
+  ['feijoa', 'shots', 'Шот Фейхоа', 'shot-feyhoa', '1 порция', '20 г эликсира Гурийский фейхоа · 25 г джина · 5 г лимонного сока · лёд', 'Встряхнуть ингредиенты со льдом. Процедить в охлаждённый шот.'],
+  ['granat', 'shots', 'Шот Горный гранат', 'granat-karkade', '1 порция', '20 г эликсира Горный гранат · 25 мл текилы blanco · 5 мл сока лайма · лёд', 'Встряхнуть все ингредиенты со льдом. Процедить в охлаждённый шот.'],
+  /* --- Алкогольные коктейли --- */
+  ['mandarin', 'cocktails', 'Джин тоник мандарин', 'gin-tonic-mandarin', '1 порция', '25 г эликсира Аджарский мандарин · 50 г джина · 150 г тоника · лёд', 'Наполнить бокал льдом, добавить джин и эликсир. Долить тоник и аккуратно перемешать.'],
+  ['mandarin', 'cocktails', 'Georgian spritz', 'spritz', '1 порция', '125 г Prosecco Brut · 25 г эликсира Аджарский мандарин · малина для украшения', 'Влить охлаждённый эликсир в винный бокал. Добавить просекко и украсить малиной.'],
+  ['mandarin', 'cocktails', 'Водка имбирь мандарин', 'vodka-imbir', '1 порция', '40 г водки · 25 г эликсира Аджарский мандарин · 20 г лимонного сока · 7 г имбирного сока · 110 г имбирного эля · лёд', 'Наполнить высокий бокал льдом и добавить водку, эликсир и соки. Долить имбирный эль и перемешать.'],
+  ['mandarin', 'cocktails', 'QROM', 'qrom', '1 порция', '40 г белого рома · 25 г эликсира Аджарский мандарин · 20 г лимонного сока · 10 г миндального сиропа', 'Встряхнуть все ингредиенты со льдом в шейкере. Процедить в бокал со свежим льдом.'],
+  ['mandarin', 'cocktails', 'QGIN', 'qrom', '1 порция', '40 г джина · 25 г эликсира Аджарский мандарин · 20 г лимонного сока · 5 г миндального сиропа', 'Встряхнуть все ингредиенты со льдом в шейкере. Процедить в бокал со свежим льдом.'],
+  ['mandarin', 'cocktails', 'Tangerine beer', 'tangerine-beer', '1 порция', '330 г пшеничного пива weiss или blanche · 50 г эликсира Аджарский мандарин', 'Налить охлаждённое пиво в бокал. Добавить эликсир и осторожно размешать до растворения.'],
+  ['granat', 'cocktails', 'Гранатовый спритц', 'spritz', '1 порция', '30 г эликсира Горный гранат · 40 г джина · 15 г лимонного сока · 100 мл тоника · лёд', 'Наполнить бокал льдом и добавить джин, эликсир и лимонный сок. Долить тоник и аккуратно перемешать.'],
+  ['feijoa', 'cocktails', 'Фейхоа сауэр', 'shot-feyhoa', '1 порция', '30 г эликсира Гурийский фейхоа · 40 мл джина · 20 мл лимонного сока · 15 мл аквафабы или пастеризованного яичного белка · лёд', 'Встряхнуть ингредиенты без льда 10 секунд. Добавить лёд, снова встряхнуть и процедить в охлаждённый бокал.'],
+  ['granat', 'cocktails', 'Гранатовый розмариновый спритц', 'spritz', '1 порция', '30 г эликсира Горный гранат · 100 мл Prosecco Brut · 50 мл газированной воды · лёд · веточка розмарина', 'Наполнить винный бокал льдом и добавить эликсир. Влить просекко и воду, аккуратно перемешать; украсить розмарином.'],
+  /* --- Кондитерские изделия --- */
+  ['mandarin', 'pastry', 'Мандариновый топинг', 'mandarin-toping', 'По вкусу', 'Эликсир Аджарский мандарин в нужном количестве · сырники, блинчики, мороженое или другой готовый десерт', 'Охладить или слегка подогреть эликсир в зависимости от десерта. Полить готовое блюдо непосредственно перед подачей.'],
+  ['mandarin', 'pastry', 'Мандариновые десерты', 'mandarin-desert', 'Идеи применения', 'Меренга, кекс или эклер · торт с шоколадом · шоколадный бисквит с начинкой · эликсир Аджарский мандарин по вкусу', 'Использовать эликсир как пропитку, топинг или вкусовую добавку к крему. Добавлять небольшими порциями, контролируя сладость и консистенцию.'],
+  ['feijoa', 'pastry', 'Крем с фейхоа для чизкейка', 'mandarin-desert', 'На 4 порции', '60 г эликсира Гурийский фейхоа · 120 г сливочного сыра · 40 г сливок 33% · 10 г сахарной пудры', 'Взбить сливочный сыр с сахарной пудрой до гладкости. Постепенно добавить сливки и эликсир; охладить 30 минут.'],
+  ['feijoa', 'pastry', 'Фейхоа курд', 'mandarin-toping', 'Около 250 г', '80 г эликсира Гурийский фейхоа · 2 яичных желтка · 40 г сахара · 50 г сливочного масла', 'Смешать желтки, сахар и эликсир и готовить на водяной бане до загустения. Снять с огня, вмешать масло и охладить под плёнкой в контакт.'],
+  ['granat', 'pastry', 'Гранатовый соус для панна котты', 'mandarin-toping', 'Около 120 г', '80 г эликсира Горный гранат · 40 г воды · 5 г кукурузного крахмала', 'Развести крахмал в холодной воде и соединить с эликсиром. Прогреть до лёгкого загустения, постоянно помешивая; полностью охладить.'],
+  ['granat', 'pastry', 'Гранатовое желе для десертов', 'mandarin-desert', 'На 4 порции', '100 г эликсира Горный гранат · 100 г воды · 4 г желатина · 20 г холодной воды для замачивания', 'Замочить желатин в 20 г холодной воды. Смешать эликсир со 100 г воды и слегка прогреть, не кипятить. Растворить желатин, разлить по формам и охладить 3–4 часа.'],
+  /* --- Кухня --- */
+  ['mandarin', 'kitchen', 'Мандариновый соус для салата', 'mandarin-sous', 'На 1 салат', '30 г эликсира Аджарский мандарин · 30 г горчицы · 40 г оливкового масла · соль и перец по вкусу · листья салата и остальные ингредиенты по вкусу', 'Смешать эликсир с горчицей. Постепенно ввести масло, посолить и поперчить; заправить салат перед подачей.'],
+  ['mandarin', 'kitchen', 'Мандариновый соус для мяса, рыбы и птицы', 'mandarin-sous-govyadina', 'На 1–2 порции', '30 г эликсира Аджарский мандарин · 10 г имбирного сока · 20 г оливкового масла · соль и перец по вкусу', 'Смешать эликсир с имбирным соком. Ввести масло, приправить и использовать как соус или маринад.'],
+  ['feijoa', 'kitchen', 'Винегретная заправка с фейхоа', 'mandarin-sous', 'Около 90 г', '25 г эликсира Гурийский фейхоа · 15 г сока лайма · 45 г оливкового масла · 10 г дижонской горчицы · соль и чёрный перец', 'Смешать эликсир, сок лайма и горчицу. Тонкой струйкой ввести масло, посолить и поперчить.'],
+  ['feijoa', 'kitchen', 'Глазурь с фейхоа для птицы и рыбы', 'mandarin-sous-govyadina', 'Около 70 г', '40 г эликсира Гурийский фейхоа · 15 г соевого соуса · 10 г имбирного сока · 5 г рисового уксуса', 'Соединить ингредиенты в небольшом сотейнике. Уварить 3–4 минуты до лёгкого загустения; наносить в конце запекания.'],
+  ['granat', 'kitchen', 'Гранатовая винегретная заправка', 'mandarin-sous', 'Около 100 г', '30 г эликсира Горный гранат · 15 г бальзамического уксуса · 45 г оливкового масла · 10 г дижонской горчицы · соль и чёрный перец', 'Смешать эликсир, уксус и горчицу. Постепенно ввести масло, приправить по вкусу.'],
+  ['granat', 'kitchen', 'Гранатовая глазурь для мяса и овощей', 'mandarin-sous-govyadina', 'Около 75 г', '50 г эликсира Горный гранат · 15 г соевого соуса · 10 г лимонного сока · щепотка чёрного перца', 'Соединить ингредиенты и прогреть на слабом огне. Уварить 4–5 минут; наносить на продукт в последние минуты приготовления.'],
+];
+const grid = $('#rcGrid');
+const ingredientList = text => text.split(' · ').map(item => `<li>${item}</li>`).join('');
+grid.innerHTML = RECIPES.map((r, i) => `
+  <article class="tile" data-flavor="${r[0]}" data-cat="${r[1]}" data-i="${i}">
+    <div class="tile-media"><img src="рецепты/изображения-web/${r[3]}.webp" alt="${r[2]}" loading="lazy"></div>
+    <div class="tile-meta"><span>${CAT[r[1]]}</span></div>
+    <h3>${r[2]}</h3><ul class="ingredients">${ingredientList(r[5])}</ul>
+    <div class="steps"><p>${r[6]}</p></div>
+  </article>`).join('');
+const tiles = $$('.tile', grid);
+grid.addEventListener('click', e => { const t = e.target.closest('.tile'); if (t) t.classList.toggle('open'); });
+
+const rc = $('#rc'), rcBottle = $('#rcBottle'), rcAllBottles = $('#rcAllBottles');
+let rcState = { flavor: 'mandarin', cat: 'all', open: false };
+function visibleTiles() { return tiles.filter(t => (rcState.flavor === 'all' || t.dataset.flavor === rcState.flavor) && (rcState.cat === 'all' || t.dataset.cat === rcState.cat)); }
+function applyFilter(animate) {
+  const state = animate ? Flip.getState(tiles) : null;
+  tiles.forEach(t => t.style.display = visibleTiles().includes(t) ? '' : 'none');
+  const n = visibleTiles().length;
+  $('#rcCount').textContent = n + ' ' + (n % 10 === 1 && n % 100 !== 11 ? 'рецепт' : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 'рецепта' : 'рецептов');
+  if (state) Flip.from(state, { duration: 0.7, ease: 'expo.out', stagger: 0.003, absolute: true, onEnter: els => gsap.fromTo(els, { opacity: 0, scale: 0.85, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.6, stagger: 0.005 }), onLeave: els => gsap.to(els, { opacity: 0, scale: 0.85, duration: 0.4 }) });
+}
+function setFlavorUI(f) {
+  const F = f === 'all'
+    ? { name: 'Все вкусы', word: 'с фруктами', glow: 'rgba(255,190,120,.5)', c: 'var(--orange)' }
+    : FLAVORS[f];
+  $('#rcFname').textContent = F.name;
+  $('#rcFlavorWord').textContent = F.word;
+  $('.rc-title').style.setProperty('--c', F.c);
+  rc.style.setProperty('--rcg', F.glow);
+  $$('#rcFlavors button').forEach(b => b.classList.toggle('on', b.dataset.flavor === f));
+}
+function currentStageFlavor() {
+  const t = tl.time();
+  if (t > 6.6) return null;            // trio: no single bottle
+  return 'mandarin';
+}
+function sourceRect(flavor) {
+  const t = tl.time(), inStage = lenis.scroll < stageST.end - 10;
+  if (inStage && t > 3.2 && (t < 6.3 || t > 7.4)) {
+    const r = bottles[flavor].querySelector('.b-img').getBoundingClientRect();
+    if (r.width > 0) return r;
+  }
+  const h = innerHeight * 0.6, w = h * 2 / 3;
+  return { left: (innerWidth - w) / 2, top: (innerHeight - h) / 2, width: w, height: h, center: true };
+}
+function openRecipes(flavor, category = 'all') {
+  if (rcState.open) {
+    if (flavor) switchFlavor(flavor);
+    if (category && (category === 'all' || CAT[category])) {
+      rcState.cat = category;
+      $$('#rcTabs button').forEach(b => b.classList.toggle('on', b.dataset.cat === category));
+      applyFilter(true);
+    }
+    return;
+  }
+  flavor = flavor || currentStageFlavor() || 'mandarin';
+  category = category && (category === 'all' || CAT[category]) ? category : 'all';
+  rcState = { flavor, cat: category, open: true };
+  $$('#rcTabs button').forEach(b => b.classList.toggle('on', b.dataset.cat === category));
+  setFlavorUI(flavor);
+  applyFilter(false);
+  lenis.stop();
+  rc.setAttribute('aria-hidden', 'false');
+  const introFlavor = flavor === 'all' ? 'mandarin' : flavor;
+  rcBottle.src = `assets/bottle-${introFlavor}.png`;
+  gsap.set(rcBottle, { opacity: 0, x: 0, rotation: 0 });
+  gsap.set(rcAllBottles, { opacity: 0, scale: .92 });
+  gsap.set(rc, { visibility: 'visible' });
+
+  const from = sourceRect(introFlavor);
+  const fly = new Image(); fly.src = `assets/bottle-${introFlavor}.png`; fly.className = 'fly';
+  document.body.appendChild(fly);
+  gsap.set(fly, { left: from.left, top: from.top, width: from.width, height: from.height, opacity: from.center ? 0 : 1, scale: from.center ? 0.6 : 1 });
+  const to = $('#rcSlot').getBoundingClientRect();
+  const vis = visibleTiles();
+  gsap.set(tiles, { opacity: 0 });
+  gsap.timeline()
+    .fromTo('#rcBg', { clipPath: 'circle(0% at 50% 50%)' }, { clipPath: 'circle(150% at 50% 50%)', duration: 1, ease: 'expo.inOut' }, 0)
+    .to(fly, { opacity: 1, scale: 1, duration: 0.5, ease: 'power2.out' }, 0)
+    .to(fly, { left: to.left, top: to.top, width: to.width, height: to.height, duration: 1.2, ease: 'expo.inOut' }, 0.2)
+    .to('#rcGlow', { opacity: 1, duration: 1 }, 0.9)
+    .set(rcBottle, { opacity: flavor === 'all' ? 0 : 1 }, 1.4)
+    .to(rcAllBottles, { opacity: flavor === 'all' ? 1 : 0, scale: 1, duration: .45, ease: 'expo.out' }, 1.35)
+    .call(() => fly.remove(), null, 1.42)
+    .fromTo('.rc-head', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: 'expo.out' }, 0.55)
+    .fromTo(vis, { y: 80, opacity: 0, scale: 0.92 }, { y: 0, opacity: 1, scale: 1, duration: 0.55, stagger: 0.0035, ease: 'expo.out' }, 0.7)
+    .set(tiles, { opacity: 1 })
+    .fromTo('#rcTabs', { y: 120, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: 'expo.out' }, 0.75)
+    .fromTo('.rc-fname, #rcFlavors', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, stagger: 0.005, ease: 'expo.out' }, 0.85)
+    .fromTo('#rcClose', { scale: 0 }, { scale: 1, duration: 0.6, ease: 'back.out(2)' }, 1.2);
+}
+function switchFlavor(f) {
+  if (f === rcState.flavor) return;
+  const previous = rcState.flavor;
+  const dir = previous === 'all' || f === 'all' || Object.keys(FLAVORS).indexOf(f) > Object.keys(FLAVORS).indexOf(previous) ? 1 : -1;
+  rcState.flavor = f;
+  setFlavorUI(f);
+  applyFilter(true);
+  if (f === 'all') {
+    gsap.timeline()
+      .to(rcBottle, { x: -80, rotation: -8, opacity: 0, duration: .35, ease: 'power2.in' })
+      .fromTo(rcAllBottles, { opacity: 0, scale: .92 }, { opacity: 1, scale: 1, duration: .7, ease: 'expo.out' }, .12);
+    return;
+  }
+  if (previous === 'all') {
+    gsap.timeline()
+      .to(rcAllBottles, { opacity: 0, scale: .92, duration: .3, ease: 'power2.in' })
+      .call(() => rcBottle.src = `assets/bottle-${f}.png`)
+      .fromTo(rcBottle, { x: 80, rotation: 8, opacity: 0 }, { x: 0, rotation: 0, opacity: 1, duration: .9, ease: 'expo.out' }, .12);
+    return;
+  }
+  gsap.timeline()
+    .to(rcBottle, { x: -80 * dir, rotation: -8 * dir, opacity: 0, duration: 0.4, ease: 'power2.in' })
+    .call(() => rcBottle.src = `assets/bottle-${f}.png`)
+    .fromTo(rcBottle, { x: 80 * dir, rotation: 8 * dir, opacity: 0 }, { x: 0, rotation: 0, opacity: 1, duration: 0.9, ease: 'expo.out' });
+}
+function closeRecipes() {
+  if (!rcState.open) return;
+  rcState.open = false;
+  gsap.timeline({ onComplete: () => { gsap.set(rc, { visibility: 'hidden' }); rc.setAttribute('aria-hidden', 'true'); lenis.start(); } })
+    .to(['.rc-head', '#rcTabs', '.rc-fname', '#rcFlavors'], { opacity: 0, y: 30, duration: 0.4 }, 0)
+    .to(visibleTiles(), { opacity: 0, y: 40, duration: 0.4, stagger: 0.002 }, 0)
+    .to([rcBottle, rcAllBottles], { y: 60, opacity: 0, duration: 0.5, ease: 'power2.in' }, 0)
+    .to('#rcGlow', { opacity: 0, duration: 0.4 }, 0)
+    .to('#rcBg', { clipPath: 'circle(0% at 50% 50%)', duration: 0.8, ease: 'expo.inOut' }, 0.3)
+    .set([rcBottle, rcAllBottles], { y: 0 });
+}
+$('#rcClose').addEventListener('click', closeRecipes);
+addEventListener('keydown', e => { if (e.key === 'Escape') { closeLeadModal(); closeRecipes(); closeMenu(); } });
+$('#rcTabs').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b || b.dataset.cat === rcState.cat) return;
+  rcState.cat = b.dataset.cat;
+  $$('#rcTabs button').forEach(x => x.classList.toggle('on', x === b));
+  applyFilter(true);
+});
+$('#rcFlavors').addEventListener('click', e => { const b = e.target.closest('button'); if (b) switchFlavor(b.dataset.flavor); });
+
+/* refresh after fonts/images */
+document.fonts && document.fonts.ready.then(() => ScrollTrigger.refresh());
+addEventListener('load', () => ScrollTrigger.refresh());
+mq.addEventListener('change', () => ScrollTrigger.refresh());
+})();
+</script>
+</body>
+</html>

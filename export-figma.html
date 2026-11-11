@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1440">
+<title>QUEETELI — static for Figma</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!--
+  Статичная версия лендинга для импорта в Figma (html.to.design / Figma code-to-design).
+  Без JS и анимаций. Фиксированная ширина 1440px, каждый экран — отдельный блок .frame.
+  Фиксированные элементы (кнопки, черточки навигации, топбар) нарисованы внутри экранов.
+-->
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1440px;margin:0 auto;background:#fff;color:#1b1814;font-family:"Manrope",sans-serif;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+img{display:block}
+em{font-style:italic}
+.serif{font-family:"Cormorant Garamond",serif}
+
+.frame{position:relative;width:1440px;overflow:hidden;background:#fff}
+.screen{height:900px}
+
+/* shared chrome */
+.topbar{position:absolute;left:0;top:0;width:1440px;height:90px;padding:22px 58px;display:flex;justify-content:space-between;align-items:center;z-index:20}
+.topbar .logo{width:110px}
+.actions{display:flex;gap:10px}
+.pill{height:46px;padding:0 22px;border-radius:999px;display:flex;align-items:center;font-weight:600;font-size:14px;background:#fff;border:1px solid rgba(27,24,20,.12)}
+.burger{width:46px;padding:0;justify-content:center;flex-direction:column;gap:5px}
+.burger i{display:block;width:18px;height:1.5px;background:#1b1814}
+.sidenav{position:absolute;right:22px;top:390px;display:flex;flex-direction:column;gap:14px;align-items:flex-end;z-index:20}
+.sidenav div{height:12px;display:flex;align-items:center;gap:6px}
+.sidenav i{display:block;height:2px;width:16px;border-radius:2px;background:rgba(27,24,20,.25)}
+.sidenav .on i{width:44px;background:#e4501c}
+.sidenav .on span{font-size:12px;font-weight:600;color:#e4501c}
+.dock{position:absolute;right:58px;bottom:26px;display:flex;gap:4px;padding:5px;border-radius:999px;background:#1e2650;z-index:20}
+.dock div{display:flex;align-items:center;gap:9px;height:46px;padding:0 20px 0 8px;border-radius:999px;color:#fff;font-weight:600;font-size:15px}
+.dock .buy{background:#e4501c}
+.dock .ico{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#fff;color:#e4501c;font-weight:800}
+.dock .taste .ico{background:transparent;color:#fff}
+
+.blob{position:absolute;border-radius:50%}
+.eyebrow{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#5b544c}
+.eyebrow:before{content:"";width:26px;height:1px;background:#5b544c}
+.h2{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:80px;line-height:.95;margin-top:18px}
+.h2 em,.title em{color:#e4501c;font-weight:500}
+.lead{font-size:19px;color:#5b544c;max-width:620px;margin-top:22px}
+
+/* 01 hero */
+.bgword{position:absolute;left:0;width:1440px;top:60px;text-align:center;font-family:"Cormorant Garamond",serif;font-weight:700;font-size:330px;line-height:.8;letter-spacing:-.03em;color:#f7b9a6;white-space:nowrap}
+.hero-left{position:absolute;left:58px;top:234px;width:560px;z-index:5}
+.hero-left .logo{width:136px;margin-bottom:34px}
+.hero-title{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:118px;line-height:.9;margin:18px 0 22px}
+.hero-title em{color:#e4501c;font-weight:500}
+.hero-sub{font-size:18px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.geo{display:flex;align-items:center;gap:10px;margin-top:26px;font-size:13px;color:#5b544c}
+.geo b{width:28px;height:20px;border:1px solid rgba(27,24,20,.12);border-radius:3px;color:#d81e2c;display:flex;align-items:center;justify-content:center}
+.branch{position:absolute;left:398px;top:-40px;width:645px;height:860px;z-index:3}
+.branch .br{width:645px;height:860px}
+.branch .mand{position:absolute;left:361px;top:171px;width:168px}
+.hero-right{position:absolute;right:98px;bottom:118px;width:330px;font-size:17px;line-height:1.55;z-index:5}
+.hero-right b{display:block;margin-bottom:6px}
+.hint{position:absolute;left:58px;bottom:34px;display:flex;align-items:center;gap:12px;font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#5b544c}
+.hint i{width:22px;height:34px;border:1.5px solid #5b544c;border-radius:12px;position:relative}
+.hint i:after{content:"";position:absolute;left:8px;top:7px;width:3px;height:7px;border-radius:2px;background:#e4501c}
+
+/* bottle scenes */
+.title{position:absolute;left:0;width:1440px;top:99px;text-align:center;font-family:"Cormorant Garamond",serif;font-weight:600;font-size:60px;line-height:1;z-index:8}
+.title small{display:block;font-family:"Manrope",sans-serif;font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#5b544c;margin-bottom:14px}
+.spot{position:absolute;left:450px;top:0;width:540px;height:900px;background:radial-gradient(ellipse 50% 70% at 50% 0%,rgba(255,236,210,.9),rgba(255,255,255,0) 70%)}
+.bottle{position:absolute;z-index:4}
+.bottle .glow{position:absolute;left:-55%;top:-10%;width:210%;height:120%;border-radius:50%}
+.bottle .shadow{position:absolute;left:18%;width:64%;bottom:1.5%;height:5%;border-radius:50%;background:radial-gradient(closest-side,rgba(40,20,0,.45),rgba(40,20,0,0))}
+.bottle .img{position:relative;width:100%;height:100%;object-fit:contain}
+.bottle .refl{position:absolute;left:0;top:96%;width:100%;height:30%;overflow:hidden;opacity:.14}
+.bottle .refl img{width:100%;transform:scaleY(-1)}
+.bottle .refl:after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(255,255,255,0),#fff 90%)}
+.bottle .fruit{position:absolute;width:95%;bottom:6%}
+.g-mand{background:radial-gradient(closest-side,rgba(255,170,80,.55),rgba(255,255,255,0) 72%)}
+.g-feij{background:radial-gradient(closest-side,rgba(170,205,90,.5),rgba(255,255,255,0) 72%)}
+.g-gran{background:radial-gradient(closest-side,rgba(230,70,100,.42),rgba(255,255,255,0) 72%)}
+.adv{position:absolute;width:240px;display:flex;gap:14px;align-items:center;padding:14px 18px 14px 14px;background:rgba(255,255,255,.85);border:1px solid #fff;border-radius:20px;box-shadow:0 24px 50px -20px rgba(120,60,10,.35);z-index:8}
+.adv img{width:56px;height:56px;object-fit:contain;flex:none}
+.adv strong{display:block;font-family:"Cormorant Garamond",serif;font-size:30px;line-height:1;color:#e4501c;font-weight:700}
+.adv span{display:block;font-size:13px;line-height:1.35;color:#5b544c;margin-top:3px}
+.cap{position:absolute;top:594px;width:300px;text-align:center;z-index:8}
+.cap h3{font-family:"Cormorant Garamond",serif;font-size:32px;line-height:1;font-weight:600;white-space:nowrap}
+.cap .reg{display:block;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#5b544c;margin:8px 0 12px}
+.cap ul{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
+.cap li{font-size:12.5px;padding:5px 11px;border-radius:999px}
+.cap .more{display:inline-block;margin-top:14px;font-size:13px;font-weight:700;border-bottom:1px solid currentColor;padding-bottom:2px}
+.c-mand li{background:#fff0e2}.c-mand .more{color:#e4501c}
+.c-feij li{background:#eef4e1}.c-feij .more{color:#5f8a2a}
+.c-gran li{background:#fbe6ea}.c-gran .more{color:#a3163c}
+
+/* sections */
+.sec{padding:150px 86px}
+.cream{background:#fbf6ef}
+.cmp{display:flex;gap:22px;margin-top:70px}
+.card{position:relative;flex:1;background:#fff;border-radius:28px;padding:34px 30px 30px;border:1px solid rgba(27,24,20,.12);overflow:hidden}
+.card.hl{flex:1.25;background:linear-gradient(160deg,#fff 0%,#fff3e6 100%);border-color:rgba(228,80,28,.35);box-shadow:0 40px 80px -40px rgba(228,80,28,.45)}
+.card .big{font-family:"Cormorant Garamond",serif;font-weight:700;font-size:100px;line-height:.85}
+.card.hl .big{color:#e4501c}
+.card .lbl{font-size:13px;color:#5b544c;margin:6px 0 24px}
+.card h3{font-family:"Cormorant Garamond",serif;font-size:30px;font-weight:600;margin-bottom:14px}
+.card ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+.card li{display:flex;gap:10px;font-size:15px}
+.card li:before{content:"✓";flex:none;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;background:#ffe2d1;color:#e4501c}
+.card.neg li:before{content:"×";background:#f4dcdc;color:#b33}
+.card .pic{position:absolute;right:-60px;top:-30px;width:250px}
+.sum{margin-top:22px;display:flex;gap:26px;align-items:center;padding:24px 30px;border-radius:24px;background:#1b1814;color:#fff}
+.sum b{font-family:"Cormorant Garamond",serif;font-size:26px;font-weight:600;margin-right:auto}
+.sum b em{color:#f39a3c}
+.sum span{display:flex;align-items:center;gap:8px;font-size:15px}
+.sum span:before{content:"";width:8px;height:8px;border-radius:50%;background:#f39a3c}
+
+.seasons{display:flex;gap:24px;margin-top:70px}
+.season{position:relative;flex:1;height:560px;border-radius:36px;overflow:hidden;padding:36px;display:flex;flex-direction:column;justify-content:flex-end}
+.season.w{background:linear-gradient(150deg,#f9e3e6,#f3c9d0)}
+.season.s{background:linear-gradient(150deg,#fff1df,#ffd3a8)}
+.season.y{background:linear-gradient(150deg,#eff5e3,#d6e7b8)}
+.season .num{position:absolute;top:30px;left:36px;font-size:13px;font-weight:700;letter-spacing:.2em}
+.season .simg{position:absolute;right:-30px;top:40px;width:300px}
+.season h3{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:88px;line-height:.85}
+.season p{margin-top:14px;color:rgba(27,24,20,.7);font-size:15px}
+.season ul{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.season li{padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.7);font-size:14px;font-weight:600}
+
+.uses{display:flex;gap:72px;align-items:center;margin-top:70px}
+.orbit{position:relative;width:620px;height:620px;flex:none}
+.ring{position:absolute;border-radius:50%;border:1px dashed rgba(228,80,28,.35)}
+.orbit .center{position:absolute;left:217px;top:155px;width:186px}
+.chip{position:absolute;padding:12px 20px;border-radius:999px;font-weight:700;font-size:15px;box-shadow:0 16px 34px -14px rgba(0,0,0,.25);white-space:nowrap}
+.checks{list-style:none;display:flex;flex-direction:column;gap:26px;margin-top:40px}
+.checks li{display:flex;gap:16px;align-items:flex-start;font-size:17px}
+.checks i{flex:none;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#fff;border:1px solid rgba(27,24,20,.12);font-style:normal;font-family:"Cormorant Garamond",serif;font-weight:700;font-size:20px;color:#e4501c}
+.stats{display:flex;gap:22px;margin-top:110px;border-top:1px solid rgba(27,24,20,.12);padding-top:50px}
+.stat{flex:1}
+.stat strong{display:block;font-family:"Cormorant Garamond",serif;font-weight:600;font-size:96px;line-height:.9}
+.stat sup{font-size:40px;vertical-align:top;margin-left:4px;color:#e4501c}
+.stat>span{display:block;color:#5b544c;font-size:14px;margin-top:10px;width:220px}
+
+.dark{background:#1b1814;color:#fff}
+.dark .eyebrow,.dark .lead{color:rgba(255,255,255,.65)}
+.dark .eyebrow:before{background:rgba(255,255,255,.65)}
+.fill{display:flex;gap:86px;align-items:center}
+.art{position:relative;width:560px;height:590px;flex:none}
+.art img{position:absolute}
+.bucket{display:inline-flex;align-items:center;gap:16px;margin:34px 0 0;padding:16px 22px;border-radius:20px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12)}
+.bucket strong{font-family:"Cormorant Garamond",serif;font-size:48px;line-height:1;color:#f39a3c}
+.bucket span{font-size:14px;color:rgba(255,255,255,.7);line-height:1.4}
+.fill h4{font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.5);margin:30px 0 14px}
+.tags{display:flex;flex-wrap:wrap;gap:8px}
+.tags span{padding:9px 15px;border-radius:999px;border:1px solid rgba(255,255,255,.18);font-size:14px}
+.tags.solid span{background:rgba(255,255,255,.08);border-color:transparent}
+
+.cta{position:relative;border-radius:40px;padding:90px 86px;background:radial-gradient(120% 120% at 100% 0%,#ffd9b4 0%,#fff3e6 45%,#fff 80%);display:flex;gap:72px;align-items:center;overflow:hidden}
+.cta .mini{position:absolute;left:640px;bottom:-40px;width:200px}
+.form{position:relative;width:460px;flex:none;display:flex;flex-direction:column;gap:12px;background:rgba(255,255,255,.85);padding:30px;border-radius:28px;border:1px solid rgba(27,24,20,.12)}
+.lab{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#5b544c}
+.inp{height:52px;border-radius:14px;border:1px solid rgba(27,24,20,.12);padding:0 16px;display:flex;align-items:center;background:#fff;margin-top:6px;font-size:16px;color:#9a938b}
+.seg{display:flex;gap:6px}
+.seg div{flex:1;height:46px;border-radius:12px;border:1px solid rgba(27,24,20,.12);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:14px}
+.seg .on{background:#1b1814;color:#fff;border-color:#1b1814}
+.btn{height:56px;border-radius:999px;background:#e4501c;color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:8px}
+.footer{display:flex;justify-content:space-between;padding:70px 0 20px;color:#5b544c;font-size:14px}
+.footer img{width:120px;margin-bottom:12px}
+.footer nav{display:flex;gap:26px}
+
+/* recipes */
+.rc .glowbg{position:absolute;right:-144px;top:90px;width:864px;height:720px;border-radius:50%}
+.rc .close{position:absolute;top:22px;right:58px;width:46px;height:46px;border-radius:50%;border:1px solid rgba(27,24,20,.12);display:flex;align-items:center;justify-content:center;font-size:22px;background:#fff;z-index:5}
+.rc .left{position:absolute;left:58px;top:30px;width:944px}
+.rc .head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:22px}
+.rc .head img{width:110px;margin-bottom:22px}
+.rc h2{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:76px;line-height:.9}
+.rc h2 em{color:#e4501c}
+.rc .count{font-size:14px;color:#5b544c}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.tile{border-radius:26px;background:#fff1e3;padding:18px;height:310px;display:flex;flex-direction:column}
+.tile .media{height:150px;display:flex;align-items:center;justify-content:center}
+.tile .media img{max-height:150px;max-width:90%}
+.tile .meta{display:flex;justify-content:space-between;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#e4501c;margin-top:auto}
+.tile h3{font-family:"Cormorant Garamond",serif;font-size:27px;font-weight:600;line-height:1;margin:8px 0}
+.tile p{font-size:13px;color:#5b544c;line-height:1.45}
+.tabs{position:absolute;left:58px;bottom:26px;display:flex;gap:6px;padding:6px;border-radius:999px;background:#fff;border:1px solid rgba(27,24,20,.12);box-shadow:0 20px 40px -20px rgba(0,0,0,.25);z-index:5}
+.tabs div{height:42px;padding:0 18px;border-radius:999px;font-size:14px;font-weight:600;display:flex;align-items:center}
+.tabs .on{background:#1b1814;color:#fff}
+.rc .side{position:absolute;left:1080px;top:150px;width:300px;display:flex;flex-direction:column;align-items:center}
+.rc .side .b{width:336px;height:504px;object-fit:contain}
+.fname{font-family:"Cormorant Garamond",serif;font-size:30px;font-weight:600;margin-top:16px}
+.flv{display:flex;gap:8px;margin-top:18px}
+.flv div{width:58px;height:72px;border-radius:16px;border:1px solid rgba(27,24,20,.12);background:#fff;display:flex;align-items:center;justify-content:center}
+.flv .on{border-color:#1b1814;box-shadow:0 10px 20px -10px rgba(0,0,0,.4)}
+.flv img{height:60px}
+
+/* menu */
+.menu{background:#fbf6ef;padding:150px 115px 0}
+.menu .links{display:flex;flex-direction:column;gap:4px}
+.menu .links div{font-family:"Cormorant Garamond",serif;font-size:78px;line-height:1.05;font-weight:500;display:flex;align-items:baseline;gap:18px}
+.menu .links small{font-family:"Manrope",sans-serif;font-size:13px;color:#5b544c;font-weight:600}
+.menu .links .hov{color:#e4501c}
+.menu .aside{position:absolute;right:115px;bottom:80px;width:300px}
+.menu .aside img{width:260px;margin-bottom:22px}
+.menu .aside p{color:#5b544c}
+</style>
+</head>
+<body>
+
+<!-- ===================== 01 · HERO ===================== -->
+<section class="frame screen" data-name="01 Hero">
+  <div class="blob" style="left:-170px;top:360px;width:600px;height:600px;background:radial-gradient(circle,rgba(255,217,184,.55) 0%,rgba(255,217,184,0) 70%)"></div>
+  <div class="blob" style="right:-140px;top:-70px;width:520px;height:520px;background:radial-gradient(circle,rgba(231,240,210,.55) 0%,rgba(231,240,210,0) 70%)"></div>
+  <div class="bgword">QUEETELI</div>
+  <div class="hero-left">
+    <img class="logo" src="assets/logo.png" alt="QUEETELI">
+    <div class="eyebrow">Authentic product of Georgia</div>
+    <h1 class="hero-title">Эликсиры<br><em>и начинки</em></h1>
+    <div class="hero-sub">из натуральных фруктов</div>
+    <div class="geo"><b>✚</b>Аджария · Гурия · Кахетия</div>
+  </div>
+  <div class="branch">
+    <img class="br" src="assets/branch.png" alt="Ветка">
+    <img class="mand" src="assets/mandarin.png" alt="Мандарин">
+  </div>
+  <div class="hero-right"><b>Концентрированные основы для:</b>холодных и горячих напитков, коктейлей, десертов, кондитерских изделий, соусов</div>
+  <div class="hint"><i></i>Листайте</div>
+  <div class="topbar"><div></div><div class="actions"><div class="pill">Рецепты</div><div class="pill burger"><i></i><i></i></div></div></div>
+  <div class="sidenav"><div class="on"><span>Главная</span><i></i></div><div><i></i></div><div><i></i></div><div><i></i></div><div><i></i></div><div><i></i></div><div><i></i></div><div><i></i></div></div>
+  <div class="dock"><div class="buy"><span class="ico">₽</span>Купить</div><div class="taste"><span class="ico">🍷</span>Дегустация</div></div>
+</section>
+
+<!-- ===================== 02 · BOTTLE + ADVANTAGES ===================== -->
+<section class="frame screen" data-name="02 Bottle advantages">
+  <div class="spot"></div>
+  <div class="title"><small>Эликсир · концентрат</small>Фрукт, <em>собранный</em> в бутылку</div>
+  <div class="bottle" style="left:540px;top:216px;width:360px;height:540px">
+    <div class="glow g-mand"></div><div class="shadow"></div>
+    <div class="refl"><img src="assets/bottle-mandarin.png" alt=""></div>
+    <img class="img" src="assets/bottle-mandarin.png" alt="Аджарский мандарин">
+  </div>
+  <div class="adv" style="left:168px;top:255px"><img src="assets/mandarin-halves.png" alt=""><div><strong>60%</strong><span>фруктовой части в каждом эликсире</span></div></div>
+  <div class="adv" style="left:1003px;top:237px"><img src="assets/mandarin.png" alt=""><div><strong>5 кг</strong><span>мандаринов в одной бутылке 330 г</span></div></div>
+  <div class="adv" style="left:125px;top:498px"><img src="assets/leaf.png" alt=""><div><strong>100%</strong><span>натуральный концентрат без лишнего</span></div></div>
+  <div class="adv" style="left:1046px;top:480px"><img src="assets/smoothie.png" alt=""><div><strong>1 : 6</strong><span>напитки, коктейли, десерты, соусы</span></div></div>
+  <div class="adv" style="left:283px;top:696px"><img src="assets/mandarin-slice.png" alt=""><div><strong>12 мес</strong><span>срок хранения без потери вкуса</span></div></div>
+  <div class="adv" style="left:902px;top:705px"><img src="assets/orange.png" alt=""><div><strong>Premium</strong><span>яркий вкус, стабильное качество</span></div></div>
+  <div class="topbar"><img class="logo" src="assets/logo.png" alt=""><div class="actions"><div class="pill">Рецепты</div><div class="pill burger"><i></i><i></i></div></div></div>
+  <div class="sidenav"><div><i></i></div><div class="on"><span>Эликсир</span><i></i></div><div><i></i></div><div><i></i></div><div><i></i></div><div><i></i></div><div><i></i></div><div><i></i></div></div>
+  <div class="dock"><div class="buy"><span class="ico">₽</span>Купить</div><div class="taste"><span class="ico">🍷</span>Дегустация</div></div>
+</section>
+
+<!-- ===================== 03 · THREE FLAVOURS ===================== -->
+<section class="frame screen" data-name="03 Three flavours">
+  <div class="spot" style="opacity:.4"></div>
+  <div class="title"><small>Линейка эликсиров · 330 г и 850 г</small>Три вкуса <em>Грузии</em></div>
+  <div class="bottle" style="left:187px;top:205px;width:230px;height:346px">
+    <div class="glow g-feij"></div><img class="fruit" src="assets/feijoa-halves.png" alt="" style="left:-30%"><div class="shadow"></div>
+    <div class="refl"><img src="assets/bottle-feijoa.png" alt=""></div>
+    <img class="img" src="assets/bottle-feijoa.png" alt="Гурийский фейхоа">
+  </div>
+  <div class="bottle" style="left:605px;top:205px;width:230px;height:346px">
+    <div class="glow g-mand"></div><img class="fruit" src="assets/mandarin-halves.png" alt="" style="right:-38%"><div class="shadow"></div>
+    <div class="refl"><img src="assets/bottle-mandarin.png" alt=""></div>
+    <img class="img" src="assets/bottle-mandarin.png" alt="Аджарский мандарин">
+  </div>
+  <div class="bottle" style="left:1023px;top:205px;width:230px;height:346px">
+    <div class="glow g-gran"></div><img class="fruit" src="assets/granat-piece.png" alt="" style="right:-42%;bottom:10%"><div class="shadow"></div>
+    <div class="refl"><img src="assets/bottle-granat.png" alt=""></div>
+    <img class="img" src="assets/bottle-granat.png" alt="Горный гранат">
+  </div>
+  <div class="cap c-feij" style="left:152px"><h3>Гурийский фейхоа</h3><span class="reg">Аджария · с кусочками плодов</span><ul><li>Экзотический аромат</li><li>Содержит йод</li><li>Витамин C</li></ul><span class="more">Рецепты →</span></div>
+  <div class="cap c-mand" style="left:570px"><h3>Аджарский мандарин</h3><span class="reg">Аджария, Грузия</span><ul><li>5 кг фруктов в бутылке</li><li>Высокая концентрация</li><li>Яркий вкус</li></ul><span class="more">Рецепты →</span></div>
+  <div class="cap c-gran" style="left:988px"><h3>Горный гранат</h3><span class="reg">Кахетия, Грузия</span><ul><li>Антиоксидант</li><li>Гемоглобин</li><li>Витамин C</li></ul><span class="more">Рецепты →</span></div>
+  <div class="topbar"><img class="logo" src="assets/logo.png" alt=""><div class="actions"><div class="pill">Рецепты</div><div class="pill burger"><i></i><i></i></div></div></div>
+  <div class="sidenav"><div><i></i></div><div><i></i></div><div class="on"><span>Три вкуса</span><i></i></div><div><i></i></div><div><i></i></div><div><i></i></div><div><i></i></div><div><i></i></div></div>
+  <div class="dock"><div class="buy"><span class="ico">₽</span>Купить</div><div class="taste"><span class="ico">🍷</span>Дегустация</div></div>
+</section>
+
+<!-- ===================== 04 · COMPARE ===================== -->
+<section class="frame sec cream" data-name="04 Compare">
+  <img src="assets/granat-seeds.png" alt="" style="position:absolute;width:340px;right:-80px;top:60px">
+  <div class="eyebrow">О продукте</div>
+  <h2 class="h2">Эликсир, <em>а не</em> сироп</h2>
+  <p class="lead">Основа для лимонада, фруктового чая, коктейля и топпинга. Концентрат, в котором в 10 раз больше фрукта, чем в привычном сиропе.</p>
+  <div class="cmp">
+    <div class="card hl"><img class="pic" src="assets/mandarin-halves.png" alt=""><div class="big">60%</div><div class="lbl">фруктовой части</div><h3>Эликсир QUEETELI</h3><ul><li>Ниже расход на порцию</li><li>Ниже food cost</li><li>Стабильный вкус в каждой точке</li><li>Хранится 12 месяцев</li></ul></div>
+    <div class="card"><div class="big">5–7%</div><div class="lbl">фруктовой части</div><h3>Сироп / кордиал</h3><ul><li>Выше закладка</li><li>Выше food cost</li><li>Больше сахара, меньше вкуса</li></ul></div>
+    <div class="card neg"><div class="big">Пюре</div><div class="lbl">фруктовое, замороженное</div><h3>Фруктовое пюре</h3><ul><li>Менее концентрированное</li><li>Нужна заморозка и разморозка</li><li>Может слоиться</li><li>Выше риск списаний</li></ul></div>
+  </div>
+  <div class="sum"><b>QUEETELI — концентрат с <em>60%</em> фрукта</b><span>меньше закладка</span><span>ниже food cost</span><span>меньше операционных потерь</span></div>
+</section>
+
+<!-- ===================== 05 · SEASONS ===================== -->
+<section class="frame sec" data-name="05 Seasons">
+  <div class="eyebrow">Круглый год в меню</div>
+  <h2 class="h2">Сезон <em>за</em> сезоном</h2>
+  <p class="lead">Один эликсир закрывает зимнюю горячую карту, летние лимонады и десерты, которые продаются круглый год.</p>
+  <div class="seasons">
+    <div class="season w"><span class="num">01 — ЗИМА</span><img class="simg" src="assets/granat-piece.png" alt=""><h3>Зима</h3><p>Согревающие напитки с глубоким гранатовым и цитрусовым вкусом.</p><ul><li>Чай</li><li>Глинтвейн</li><li>Бамбл</li><li>Горячие напитки</li></ul></div>
+    <div class="season s"><span class="num">02 — ЛЕТО</span><img class="simg" src="assets/smoothie.png" alt="" style="width:240px;top:20px"><h3>Лето</h3><p>Яркие холодные напитки, которые собираются за 30 секунд.</p><ul><li>Лимонады</li><li>Коктейли</li><li>Б/а коктейли</li><li>Cold drinks</li></ul></div>
+    <div class="season y"><span class="num">03 — КРУГЛЫЙ ГОД</span><img class="simg" src="assets/feijoa-halves.png" alt=""><h3>Всегда</h3><p>Топпинг и основа для десертов, завтраков и соусов.</p><ul><li>Топпинг</li><li>Сырники</li><li>Каши</li><li>Мороженое</li><li>Соусы</li></ul></div>
+  </div>
+</section>
+
+<!-- ===================== 06 · HORECA ===================== -->
+<section class="frame sec" data-name="06 HoReCa" style="background:linear-gradient(#fff,#fbf6ef)">
+  <div style="text-align:center">
+    <div class="eyebrow" style="justify-content:center">Для кофеен, ресторанов, спортклубов и гостиниц</div>
+    <h2 class="h2">Фруктовое меню <em>без</em> разработки с нуля</h2>
+    <p class="lead" style="margin-left:auto;margin-right:auto">Один продукт — несколько сценариев применения в HoReCa-меню.</p>
+  </div>
+  <div class="uses">
+    <div class="orbit">
+      <div class="ring" style="left:50px;top:50px;width:520px;height:520px"></div>
+      <div class="ring" style="left:136px;top:136px;width:348px;height:348px;border-color:rgba(27,24,20,.1)"></div>
+      <img class="center" src="assets/bottle-mandarin.png" alt="">
+      <span class="chip" style="left:510px;top:286px;background:#ffd7b8">Лимонад</span>
+      <span class="chip" style="left:370px;top:510px;background:#d9ebb9">Чай</span>
+      <span class="chip" style="left:100px;top:510px;background:#ffe58f">Бамбл</span>
+      <span class="chip" style="left:-10px;top:286px;background:#f8c3cd">Десерт</span>
+      <span class="chip" style="left:100px;top:62px;background:#f6a37a;color:#fff">Топпинг</span>
+      <span class="chip" style="left:380px;top:62px;background:#1e2650;color:#fff">Соус</span>
+    </div>
+    <div>
+      <h3 class="h2" style="font-size:52px">Почему выбирают <em>нас</em></h3>
+      <ul class="checks">
+        <li><i>1</i><span>Помогает быстро запустить новые напитки — сезонные и постоянные.</span></li>
+        <li><i>2</i><span>Даёт одинаковый вкус во всех точках сети.</span></li>
+        <li><i>3</i><span>Снижает зависимость от свежих фруктов и пюре.</span></li>
+        <li><i>4</i><span>Упрощает работу персонала на точке: кофейня, ресторан, спортклуб, гостиница.</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="stat"><strong>60<sup>%</sup></strong><span>фруктовой части в эликсире</span></div>
+    <div class="stat"><strong>5<sup>кг</sup></strong><span>мандаринов в бутылке 330 г</span></div>
+    <div class="stat"><strong>850<sup>г</sup></strong><span>фасовка для HoReCa, также 330 г</span></div>
+    <div class="stat"><strong>12<sup>мес</sup></strong><span>срок хранения</span></div>
+  </div>
+</section>
+
+<!-- ===================== 07 · FILLINGS ===================== -->
+<section class="frame sec dark" data-name="07 Fillings">
+  <div class="fill">
+    <div class="art">
+      <img src="assets/mandarin-halves.png" alt="" style="width:400px;left:0;top:20px">
+      <img src="assets/granat-piece.png" alt="" style="width:350px;right:-20px;top:220px">
+      <img src="assets/feijoa-halves.png" alt="" style="width:320px;left:30px;top:360px">
+    </div>
+    <div>
+      <div class="eyebrow">Для кондитерских</div>
+      <h2 class="h2">Начинки <em>из</em> фруктов</h2>
+      <p class="lead">Аджарский мандарин, гурийский фейхоа и горный гранат — в фасовке для кондитерских цехов.</p>
+      <div class="bucket"><strong>5 кг</strong><span>ведро из пищевого пластика,<br>стоимость указана за 1 кг</span></div>
+      <h4>Преимущества</h4>
+      <div class="tags solid"><span>Натуральные фрукты</span><span>Высокая концентрация</span><span>Яркий вкус</span><span>Экономичный расход</span><span>Стабильное качество</span></div>
+      <h4>Применение</h4>
+      <div class="tags"><span>Торты</span><span>Муссы</span><span>Пирожные</span><span>Кремы</span><span>Соусы</span><span>Блинчики</span><span>Бисквиты</span><span>Песочное тесто</span><span>Слоёное тесто</span><span>Круассаны</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 08 · CONTACT + FOOTER ===================== -->
+<section class="frame sec" data-name="08 Contact" style="padding-bottom:60px">
+  <div class="cta">
+    <img class="mini" src="assets/bottle-mandarin.png" alt="">
+    <div style="flex:1">
+      <div class="eyebrow">Как купить</div>
+      <h2 class="h2">Попробуйте <em>на</em> дегустации</h2>
+      <p class="lead">Привезём все три вкуса, покажем 5–6 рецептов для вашего меню и рассчитаем себестоимость порции.</p>
+    </div>
+    <div class="form">
+      <div class="seg"><div class="on">Дегустация</div><div>Купить</div></div>
+      <div><div class="lab">Имя</div><div class="inp">Ваше имя</div></div>
+      <div><div class="lab">Телефон</div><div class="inp">+7 (___) ___-__-__</div></div>
+      <div><div class="lab">Заведение</div><div class="inp" style="color:#1b1814;justify-content:space-between">Кофейня <span>⌄</span></div></div>
+      <div class="btn">Отправить заявку</div>
+    </div>
+  </div>
+  <div class="footer">
+    <div><img src="assets/logo.png" alt="QUEETELI">Authentic product of Georgia<br>© 2026 QUEETELI</div>
+    <nav><span>Продукты</span><span>Начинки</span><span>Рецепты</span><span>О бренде</span><span>Условия работы</span><span>Контакты</span></nav>
+    <div>queeteli.com</div>
+  </div>
+</section>
+
+<!-- ===================== 09 · RECIPES (overlay) ===================== -->
+<section class="frame screen rc" data-name="09 Recipes overlay">
+  <div class="glowbg" style="background:radial-gradient(closest-side,rgba(255,180,100,.45),rgba(255,255,255,0))"></div>
+  <div class="close">×</div>
+  <div class="left">
+    <div class="head"><div><img src="assets/logo.png" alt=""><h2>Рецепты <em>с мандарином</em></h2></div><div class="count">6 рецептов</div></div>
+    <div class="grid">
+      <div class="tile"><div class="media"><img src="assets/smoothie.png" alt=""></div><div class="meta"><span>Лето</span><span>3 мин</span></div><h3>Мандариновый лимонад</h3><p>40 мл эликсира · 200 мл содовой · лёд · розмарин</p></div>
+      <div class="tile"><div class="media"><img src="assets/mandarin-halves.png" alt=""></div><div class="meta"><span>Лето</span><span>3 мин</span></div><h3>Мандариновый бамбл</h3><p>30 мл эликсира · двойной эспрессо · тоник · лёд</p></div>
+      <div class="tile"><div class="media"><img src="assets/mandarin.png" alt=""></div><div class="meta"><span>Зима</span><span>5 мин</span></div><h3>Чай с мандарином и бадьяном</h3><p>30 мл эликсира · 250 мл чая · бадьян · корица</p></div>
+      <div class="tile"><div class="media"><img src="assets/orange.png" alt=""></div><div class="meta"><span>Зима</span><span>10 мин</span></div><h3>Безалкогольный глинтвейн</h3><p>40 мл эликсира · виноградный сок · гвоздика</p></div>
+      <div class="tile"><div class="media"><img src="assets/mandarin-slice.png" alt=""></div><div class="meta"><span>Круглый год</span><span>15 мин</span></div><h3>Сырники с топпингом</h3><p>Эликсир как топпинг · сметана · мята</p></div>
+      <div class="tile"><div class="media"><img src="assets/mandarin-halves.png" alt=""></div><div class="meta"><span>Кондитерка</span><span>40 мин</span></div><h3>Чизкейк с конфи</h3><p>Начинка 5 кг · сливочный сыр · песочная основа</p></div>
+    </div>
+  </div>
+  <div class="side">
+    <img class="b" src="assets/bottle-mandarin.png" alt="">
+    <div class="fname">Аджарский мандарин</div>
+    <div class="flv"><div class="on"><img src="assets/bottle-mandarin.png" alt=""></div><div><img src="assets/bottle-feijoa.png" alt=""></div><div><img src="assets/bottle-granat.png" alt=""></div></div>
+  </div>
+  <div class="tabs"><div class="on">Все</div><div>Зима</div><div>Лето</div><div>Круглый год</div><div>Кондитерка</div><div>Кухня</div></div>
+</section>
+
+<!-- ===================== 10 · MENU (overlay) ===================== -->
+<section class="frame screen menu" data-name="10 Menu overlay">
+  <div class="links">
+    <div><small>01</small>Продукты</div>
+    <div class="hov"><small>02</small>Начинки</div>
+    <div><small>03</small>Рецепты</div>
+    <div><small>04</small>О бренде</div>
+    <div><small>05</small>Условия работы</div>
+    <div><small>06</small>Как купить</div>
+  </div>
+  <div class="aside"><img src="assets/bottle-granat.png" alt=""><p>Authentic product of Georgia. Эликсиры и начинки из натуральных фруктов Аджарии и Кахетии.</p></div>
+  <div class="topbar"><img class="logo" src="assets/logo.png" alt=""><div class="actions"><div class="pill">Рецепты</div><div class="pill burger" style="background:#1b1814"><i style="background:#fff;transform:translateY(3px) rotate(45deg)"></i><i style="background:#fff;transform:translateY(-3px) rotate(-45deg)"></i></div></div></div>
+</section>
+
+</body>
+</html>

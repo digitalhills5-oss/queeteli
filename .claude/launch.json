@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "queeteli",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "E:\\temp\\claude\\E--queeteli\\f79ce63c-9e44-4b56-a28e-42d966742294\\scratchpad\\serve.ps1"],
+      "port": 5173
+    }
+  ]
+}

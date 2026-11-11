@@ -1,0 +1,9 @@
+{
+  "name": "queeteli",
+  "version": "1.0.0",
+  "private": true,
+  "description": "QUEETELI — лендинг эликсиров из натуральных фруктов",
+  "scripts": {
+    "dev": "node server.js"
+  }
+}
